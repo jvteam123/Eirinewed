@@ -4,52 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding of El Vincent & Irine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
-        :root { --moose-green: #2e3b2e; --gold: #d4af37; --cream: #fdfaf5; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--moose-green); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        /* Updated Palette: Nature Distilled (Cloud Dancer & Earthy Greens) */
+        :root { 
+            --moose-green: #2e3b2e; 
+            --gold: #d4af37; 
+            --cream: #fdfaf5; 
+            --cloud-dancer: #f0f0f0; /* Soft neutral for 2026 */
+            --earth-clay: #a68d7a;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--cream); 
+            color: var(--moose-green); 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            transition: background 0.3s ease;
+        }
         
         /* Fixed Gold Border */
         .site-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; border: 12px solid var(--cream); outline: 2px solid var(--gold); outline-offset: -10px; pointer-events: none; z-index: 2000; }
         
         .container { max-width: 500px; width: 85%; padding: 60px 20px; text-align: center; }
-        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
-        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
         
+        /* Kinetic Typography Feel */
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 3px; margin: 10px 0; animation: slideUp 1s ease-out; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
         .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
         
-        .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border: 1px solid #eee; }
         .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
         .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
-        @keyframes fade { from {opacity: .7} to {opacity: 1} }
+        @keyframes fade { from {opacity: .8} to {opacity: 1} }
 
-        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
-        .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
-        .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
-        .unit label { font-size: 0.5rem; color: white; text-transform: uppercase; }
+        /* Timer with 3D Tactile maximalism */
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 25px 0; }
+        .unit { 
+            background: var(--moose-green); 
+            color: var(--gold); 
+            padding: 12px 5px; 
+            border-radius: 8px; 
+            border: 1px solid var(--gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .unit span { display: block; font-size: 1.2rem; font-weight: bold; }
+        .unit label { font-size: 0.55rem; color: var(--cloud-dancer); text-transform: uppercase; }
 
-        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; }
+        /* Buttons with Glassmorphism interaction */
+        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 16px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1.5px; transition: all 0.3s ease; }
+        .btn:hover { background: #3a4b3a; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
         
         .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; }
+        /* RSVP Box Enhancements */
+        .rsvp-box { background: white; padding: 30px; margin-top: 30px; border: 1px solid #eee; border-top: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; border-radius: 4px; font-size: 0.85rem; }
+        label.form-label { display: block; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-top: 5px; color: var(--earth-clay); }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; overflow-y: auto; }
-        .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
-        .close { position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
+        /* Modal with Glassmorphism */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(46, 59, 46, 0.95); z-index: 3000; overflow-y: auto; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--cream); width: 88%; max-width: 480px; margin: 30px auto; padding: 35px; border-radius: 12px; position: relative; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
         
-        .section-header { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; }
-        .detail-row { font-size: 0.85rem; line-height: 1.8; margin-bottom: 15px; }
-        .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 5px; }
+        .section-header { font-family: 'Cinzel'; color: var(--gold); border-bottom: 2px solid var(--gold); margin: 25px 0 12px; font-size: 0.95rem; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
+        .detail-row { font-size: 0.85rem; line-height: 1.8; margin-bottom: 20px; }
+        .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 8px; }
 
-        .color-palette { display: flex; gap: 12px; margin: 10px 0; }
-        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .color-palette { display: flex; gap: 12px; margin: 15px 0; }
+        .swatch { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+
+        .map-link { display: inline-block; margin-top: 10px; color: var(--gold); text-decoration: none; font-weight: bold; font-size: 0.8rem; border: 1px solid var(--gold); padding: 5px 10px; border-radius: 4px; }
+        
+        /* Poll Section styling */
+        .poll-box { background: var(--cloud-dancer); padding: 15px; border-radius: 8px; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -57,7 +97,7 @@
     <div class="site-frame"></div>
 
     <div class="container">
-        <p style="letter-spacing: 4px; font-size: 0.75rem;">YOU ARE INVITED TO THE WEDDING OF</p>
+        <p style="letter-spacing: 5px; font-size: 0.7rem; color: var(--earth-clay); font-weight: 600;">SAVE THE DATE</p>
         <p class="cursive">El Vincent & Irine</p>
         <h1>MARCH 7, 2026</h1>
         
@@ -81,39 +121,54 @@
             <div class="unit"><span id="secs">00</span><label>Secs</label></div>
         </div>
 
-        <button class="btn" onclick="openModal('detailsModal')">View Wedding Details</button>
+        <button class="btn" onclick="openModal('detailsModal')">WEDDING DETAILS & MAP</button>
         
         <div class="rsvp-box">
-            <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
-            <input type="text" id="guestName" placeholder="Your Full Name">
+            <h3 style="font-family: 'Cinzel'; font-size: 1rem; margin: 0 0 15px 0; color: var(--moose-green);">RSVP Station</h3>
+            
+            <label class="form-label">Full Name</label>
+            <input type="text" id="guestName" placeholder="As written on invitation">
+            
+            <label class="form-label">Will you join us?</label>
             <select id="isAttending">
-                <option value="Yes">Yes, I'm attending</option>
-                <option value="No">No, I can't make it</option>
+                <option value="Yes">Yes, I'll be there!</option>
+                <option value="No">Sadly, I can't make it</option>
             </select>
+
+            <label class="form-label">Dietary Restrictions</label>
+            <input type="text" id="dietary" placeholder="Allergies / Veggie (Optional)">
+
+            <label class="form-label">Party Song Request 🎵</label>
+            <input type="text" id="songRequest" placeholder="What will get you dancing?">
+
             <button class="btn" id="submitRsvp">
-                <span id="btnText">SUBMIT RSVP</span>
+                <span id="btnText">CONFIRM ATTENDANCE</span>
                 <div class="loader" id="loader"></div>
             </button>
-            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--moose-green); font-size:0.7rem; text-decoration:underline; font-family:'Montserrat';">Who's attending?</button>
+            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--earth-clay); font-size:0.75rem; text-decoration:underline; font-family:'Montserrat'; margin-top:15px;">View Guest List</button>
         </div>
     </div>
 
     <div id="detailsModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('detailsModal')">&times;</span>
-            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Entourage</h2>
+            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 25px;">The Celebration</h2>
             
             <div class="detail-row">
-                <div class="section-header">Venues</div>
-                <span class="role-title">Ceremony</span>
-                Sto. Thomas de Villanueva Parish, Pardo, Cebu City @ 1:30 PM
-                <span class="role-title">Reception</span>
+                <div class="section-header">Location</div>
+                <span class="role-title">Ceremony @ 1:30 PM</span>
+                Sto. Thomas de Villanueva Parish, Pardo, Cebu City
+                <br>
+                <a href="https://maps.app.goo.gl/3XmYvU3ZfP6Z6uP97" target="_blank" class="map-link">📍 OPEN IN GOOGLE MAPS</a>
+                
+                <span class="role-title" style="margin-top: 15px;">Reception</span>
                 Sto. Thomas de Villanueva Parish Function Hall
             </div>
 
             <div class="detail-row">
-                <div class="section-header">Dress Code: Moose Green</div>
-                Semi-Formal Earth Tones
+                <div class="section-header">Dress Code</div>
+                <strong>Semi-Formal Earth Tones</strong><br>
+                We would love to see you in our wedding theme: <span style="color: var(--moose-green); font-weight:600;">Moose Green</span>.
                 <div class="color-palette">
                     <div class="swatch" style="background-color: #2e3b2e;"></div>
                     <div class="swatch" style="background-color: #4a5d4a;"></div>
@@ -123,49 +178,25 @@
             </div>
 
             <div class="detail-row">
-                <div class="section-header">Parents</div>
-                <span class="role-title">Of the Bride</span>
-                Alejandro Briones & Raquel Abarcas
-                <span class="role-title">Of the Groom</span>
+                <div class="section-header">Interactive Poll</div>
+                <div class="poll-box">
+                    <p style="font-size: 0.8rem; margin: 0 0 10px 0; font-weight: 600;">What should the couple do first on their honeymoon?</p>
+                    <button class="btn" style="padding: 8px; font-size: 0.65rem; margin-top: 5px;" onclick="alert('Thanks for voting for Skydiving!')">Skydiving</button>
+                    <button class="btn" style="padding: 8px; font-size: 0.65rem; margin-top: 5px;" onclick="alert('Thanks for voting for Food Trip!')">Local Food Trip</button>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Entourage</div>
+                <span class="role-title">Parents</span>
+                Alejandro Briones & Raquel Abarcas<br>
                 Didong Enopia & Elizabeth Verano Estomago
-            </div>
-
-            <div class="detail-row">
-                <div class="section-header">Honor Graduates</div>
-                <span class="role-title">Best Man</span> Noel Estomago
-                <span class="role-title">Maid of Honor</span> Lovely Aras
-            </div>
-
-            <div class="detail-row">
-                <div class="section-header">Groomsmen & Bridesmaids</div>
-                <span class="role-title">Groomsmen</span>
-                Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
-                <span class="role-title">Bridesmaids</span>
-                Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
-            </div>
-
-            <div class="detail-row">
-                <div class="section-header">Sponsors</div>
-                <span class="role-title">Principal Sponsors</span>
+                
+                <span class="role-title">Best Man & Maid of Honor</span>
+                Noel Estomago | Lovely Aras
+                
+                <span class="role-title">Sponsors</span>
                 Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
-                <span class="role-title">Major Sponsors</span>
-                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Verano Estomago
-            </div>
-
-            <div class="detail-row">
-                <div class="section-header">Bearers & Flower Girls</div>
-                <span class="role-title">Ring Bearer</span> John Benedict Abarcas
-                <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
-                <span class="role-title">Coin Bearer</span> Leonardo Paez
-                <span class="role-title">Flower Girls</span>
-                Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
-            </div>
-
-            <div class="detail-row">
-                <div class="section-header">Secondary Sponsors</div>
-                <span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
-                <span class="role-title">Cord</span> Joselito Blanco & Sarah Sayon
-                <span class="role-title">Candle</span> Daryl Consuegra & Arbi Misal
             </div>
         </div>
     </div>
@@ -193,45 +224,68 @@
         document.getElementById('submitRsvp').onclick = async () => {
             const name = document.getElementById('guestName').value;
             const status = document.getElementById('isAttending').value;
+            const dietary = document.getElementById('dietary').value;
+            const song = document.getElementById('songRequest').value;
+            
             const btn = document.getElementById('submitRsvp');
             const loader = document.getElementById('loader');
             const txt = document.getElementById('btnText');
+
             if(!name) return alert("Please enter your name");
+
             btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
+
             try {
-                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                alert("RSVP Successful!");
+                await db.collection("weddingGuests").add({ 
+                    name, 
+                    status, 
+                    dietary: dietary || "None",
+                    songRequest: song || "None",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                });
+                alert("Thank you! Your RSVP has been received.");
                 document.getElementById('guestName').value = "";
+                document.getElementById('dietary').value = "";
+                document.getElementById('songRequest').value = "";
             } catch (e) { alert("Error: " + e.message); } 
-            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
+            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "CONFIRM ATTENDANCE"; }
         };
 
         function openModal(id) { document.getElementById(id).style.display = "block"; if(id==='guestModal') loadGuests(); }
         function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        
         async function loadGuests() {
             const list = document.getElementById('attendingList');
-            list.innerHTML = "Loading...";
+            list.innerHTML = "<p style='text-align:center'>Loading our favorite people...</p>";
             const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
             list.innerHTML = "";
-            snap.forEach(doc => { if(doc.data().status === "Yes") list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; });
+            snap.forEach(doc => { 
+                if(doc.data().status === "Yes") {
+                    list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 12px 0; display:flex; justify-content:space-between;">
+                        <span>🌿 ${doc.data().name}</span>
+                        <span style="font-size:0.6rem; color:var(--earth-clay)">Ready to dance!</span>
+                    </li>`; 
+                }
+            });
         }
 
         let sIdx = 0;
         function play() {
             let s = document.querySelectorAll(".mySlides");
+            if(s.length === 0) return;
             s.forEach(x => x.style.display = "none");
-            sIdx = (sIdx + 1) % 2; s[sIdx].style.display = "block";
-            setTimeout(play, 3500);
+            sIdx = (sIdx + 1) % s.length; s[sIdx].style.display = "block";
+            setTimeout(play, 4000);
         }
         play();
 
         const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
         setInterval(() => {
             const diff = weddingDate - new Date().getTime();
-            document.getElementById("days").innerText = Math.floor(diff / 86400000);
-            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000);
+            document.getElementById("days").innerText = Math.max(0, Math.floor(diff / 86400000)).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000)).toString().padStart(2, '0');
+            document.getElementById("mins").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000)).toString().padStart(2, '0');
+            document.getElementById("secs").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)).toString().padStart(2, '0');
         }, 1000);
     </script>
 </body>
