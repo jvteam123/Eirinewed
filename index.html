@@ -156,4 +156,51 @@
             if(!name) return alert("Please enter your name");
 
             btn.disabled = true;
-            loader
+            loader.style.display = "block";
+            txt.innerText = "SENDING...";
+
+            try {
+                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                alert("RSVP Successful! See you there.");
+                document.getElementById('guestName').value = "";
+            } catch (e) {
+                alert("Error: " + e.message);
+            } finally {
+                btn.disabled = false;
+                loader.style.display = "none";
+                txt.innerText = "SUBMIT RSVP";
+            }
+        };
+
+        function openModal(id) { document.getElementById(id).style.display = "block"; if(id==='guestModal') loadGuests(); }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+        async function loadGuests() {
+            const list = document.getElementById('attendingList');
+            list.innerHTML = "<li>Loading confirmed guests...</li>";
+            const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
+            list.innerHTML = "";
+            snap.forEach(doc => { if(doc.data().status === "Yes") list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 8px 0;">🌿 ${doc.data().name}</li>`; });
+        }
+
+        let sIdx = 0;
+        function play() {
+            let s = document.querySelectorAll(".mySlides");
+            s.forEach(x => x.style.display = "none");
+            sIdx = (sIdx + 1) % 2;
+            s[sIdx].style.display = "block";
+            setTimeout(play, 3500);
+        }
+        play();
+
+        const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
+        setInterval(() => {
+            const diff = weddingDate - new Date().getTime();
+            document.getElementById("days").innerText = Math.floor(diff / 86400000);
+            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000);
+            document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000);
+            document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
