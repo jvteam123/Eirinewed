@@ -18,38 +18,38 @@
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
         .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
         
-        /* Photo Frame (Limited to 2 Slides) */
+        .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
+        
         .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
         .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
         .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
         @keyframes fade { from {opacity: .7} to {opacity: 1} }
 
-        /* Timer */
         .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
         .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
         .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
         .unit label { font-size: 0.5rem; color: white; text-transform: uppercase; }
 
-        /* Action Buttons */
         .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
         
-        /* Loading Spinner */
         .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; }
 
-        /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; overflow-y: auto; }
         .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
         .close { position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
         
-        /* Entourage Detail Styling */
-        .entourage-title { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 8px; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold; }
-        .name-row { font-size: 0.85rem; line-height: 1.7; margin-bottom: 15px; }
+        .section-header { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; }
+        .detail-row { font-size: 0.85rem; line-height: 1.8; margin-bottom: 15px; }
+        .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 5px; }
+
+        .color-palette { display: flex; gap: 12px; margin: 10px 0; }
+        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -60,6 +60,12 @@
         <p style="letter-spacing: 4px; font-size: 0.75rem;">YOU ARE INVITED TO THE WEDDING OF</p>
         <p class="cursive">El Vincent & Irine</p>
         <h1>MARCH 7, 2026</h1>
+        
+        <div class="main-info">
+            <strong>01:30 PM</strong><br>
+            Sto. Thomas de Villanueva Parish<br>
+            Pardo, Cebu City
+        </div>
 
         <div class="photo-frame">
             <div class="slider">
@@ -75,7 +81,7 @@
             <div class="unit"><span id="secs">00</span><label>Secs</label></div>
         </div>
 
-        <button class="btn" onclick="openModal('detailsModal')">View Event Details</button>
+        <button class="btn" onclick="openModal('detailsModal')">View Wedding Details</button>
         
         <div class="rsvp-box">
             <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
@@ -95,63 +101,71 @@
     <div id="detailsModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('detailsModal')">&times;</span>
-            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 25px;">Wedding Entourage</h2>
+            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Entourage</h2>
             
-            <div class="name-row">
-                <div class="entourage-title">Dress Code</div>
-                <strong>Moose Green Motif</strong><br>
-                Please join us in wearing Semi-Formal Earth Tones.
+            <div class="detail-row">
+                <div class="section-header">Venues</div>
+                <span class="role-title">Ceremony</span>
+                Sto. Thomas de Villanueva Parish, Pardo, Cebu City @ 1:30 PM
+                <span class="role-title">Reception</span>
+                Sto. Thomas de Villanueva Parish Function Hall
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Parents</div>
-                <strong>Parents of the Bride:</strong><br> Alejandro Briones & Raquel Abarcas<br><br>
-                <strong>Parents of the Groom:</strong><br> Didong Enopia & Elizabeth Verano Estomago
+            <div class="detail-row">
+                <div class="section-header">Dress Code: Moose Green</div>
+                Semi-Formal Earth Tones
+                <div class="color-palette">
+                    <div class="swatch" style="background-color: #2e3b2e;"></div>
+                    <div class="swatch" style="background-color: #4a5d4a;"></div>
+                    <div class="swatch" style="background-color: #8c9c8c;"></div>
+                    <div class="swatch" style="background-color: #d4af37;"></div>
+                </div>
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Best Man & Maid of Honor</div>
-                <strong>Best Man:</strong> Noel Estomago<br>
-                <strong>Maid of Honor:</strong> Lovely Aras
+            <div class="detail-row">
+                <div class="section-header">Parents</div>
+                <span class="role-title">Of the Bride</span>
+                Alejandro Briones & Raquel Abarcas
+                <span class="role-title">Of the Groom</span>
+                Didong Enopia & Elizabeth Verano Estomago
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Principal Sponsors</div>
-                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+            <div class="detail-row">
+                <div class="section-header">Honor Graduates</div>
+                <span class="role-title">Best Man</span> Noel Estomago
+                <span class="role-title">Maid of Honor</span> Lovely Aras
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Major Sponsors</div>
-                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Verano Estomago
-            </div>
-
-            <div class="name-row">
-                <div class="entourage-title">Groomsmen</div>
+            <div class="detail-row">
+                <div class="section-header">Groomsmen & Bridesmaids</div>
+                <span class="role-title">Groomsmen</span>
                 Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
-            </div>
-
-            <div class="name-row">
-                <div class="entourage-title">Bridesmaids</div>
+                <span class="role-title">Bridesmaids</span>
                 Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Bearers</div>
-                <strong>Ring Bearer:</strong> John Benedict Abarcas<br>
-                <strong>Bible Bearer:</strong> Daniel Matthew Abellana<br>
-                <strong>Coin Bearer:</strong> Leonardo Paez
+            <div class="detail-row">
+                <div class="section-header">Sponsors</div>
+                <span class="role-title">Principal Sponsors</span>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+                <span class="role-title">Major Sponsors</span>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Verano Estomago
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Flower Girls</div>
+            <div class="detail-row">
+                <div class="section-header">Bearers & Flower Girls</div>
+                <span class="role-title">Ring Bearer</span> John Benedict Abarcas
+                <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
+                <span class="role-title">Coin Bearer</span> Leonardo Paez
+                <span class="role-title">Flower Girls</span>
                 Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
             </div>
 
-            <div class="name-row">
-                <div class="entourage-title">Secondary Sponsors</div>
-                <strong>Veil:</strong> Gleen Paez & Flordeliza Bacalso<br>
-                <strong>Cord:</strong> Joselito Blanco & Sarah Blanco<br>
-                <strong>Candle:</strong> Daryl Consuegra & Arbi Misal
+            <div class="detail-row">
+                <div class="section-header">Secondary Sponsors</div>
+                <span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
+                <span class="role-title">Cord</span> Joselito Blanco & Sarah Sayon
+                <span class="role-title">Candle</span> Daryl Consuegra & Arbi Misal
             </div>
         </div>
     </div>
@@ -159,13 +173,12 @@
     <div id="guestModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('guestModal')">&times;</span>
-            <h2 style="font-family: 'Cinzel'; text-align: center;">Attending Guests</h2>
+            <h2 style="font-family: 'Cinzel'; text-align: center;">Confirmed Guests</h2>
             <ul id="attendingList" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
         </div>
     </div>
 
     <script>
-        // Firestore Config
         const firebaseConfig = {
             apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
             authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
@@ -177,59 +190,44 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // RSVP Logic
         document.getElementById('submitRsvp').onclick = async () => {
             const name = document.getElementById('guestName').value;
             const status = document.getElementById('isAttending').value;
             const btn = document.getElementById('submitRsvp');
             const loader = document.getElementById('loader');
             const txt = document.getElementById('btnText');
-
             if(!name) return alert("Please enter your name");
-
-            btn.disabled = true;
-            loader.style.display = "block";
-            txt.innerText = "SENDING...";
-
+            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
             try {
                 await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                alert("RSVP Successful! We look forward to seeing you.");
+                alert("RSVP Successful!");
                 document.getElementById('guestName').value = "";
-            } catch (e) {
-                alert("Error: " + e.message);
-            } finally {
-                btn.disabled = false;
-                loader.style.display = "none";
-                txt.innerText = "SUBMIT RSVP";
-            }
+            } catch (e) { alert("Error: " + e.message); } 
+            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
         };
 
         function openModal(id) { document.getElementById(id).style.display = "block"; if(id==='guestModal') loadGuests(); }
         function closeModal(id) { document.getElementById(id).style.display = "none"; }
-
         async function loadGuests() {
             const list = document.getElementById('attendingList');
-            list.innerHTML = "Fetching guests...";
+            list.innerHTML = "Loading...";
             const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
             list.innerHTML = "";
-            snap.forEach(doc => { if(doc.data().status === "Yes") list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 8px 0;">🌿 ${doc.data().name}</li>`; });
+            snap.forEach(doc => { if(doc.data().status === "Yes") list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; });
         }
 
-        // Slideshow (2 Photo Limit)
         let sIdx = 0;
         function play() {
             let s = document.querySelectorAll(".mySlides");
             s.forEach(x => x.style.display = "none");
-            sIdx = (sIdx + 1) % 2;
-            s[sIdx].style.display = "block";
+            sIdx = (sIdx + 1) % 2; s[sIdx].style.display = "block";
             setTimeout(play, 3500);
         }
         play();
 
-        // Timer
-        const target = new Date("March 7, 2026 13:30:00").getTime();
+        const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
         setInterval(() => {
-            const diff = target - new Date().getTime();
+            const diff = weddingDate - new Date().getTime();
             document.getElementById("days").innerText = Math.floor(diff / 86400000);
             document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000);
             document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000);
