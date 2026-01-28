@@ -4,196 +4,208 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding of El Vincent & Irine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
-            --moose-green: #3e4c3e; /* Professional Deep Moose Green */
-            --sage-accent: #8a9a8a;
-            --cream: #fcfaf5;
-            --gold-soft: #c5a059;
+            --moose-green: #2e3b2e;
+            --gold: #d4af37;
+            --cream: #fdfaf5;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--cream);
             color: var(--moose-green);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 80px 20px 40px;
+        /* Fixed Professional Border */
+        .site-frame {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 12px solid var(--cream);
+            outline: 2px solid var(--gold);
+            outline-offset: -10px;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 85%;
+            padding: 60px 20px;
             text-align: center;
         }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 1.8rem; letter-spacing: 2px; margin: 5px 0; color: var(--moose-green); }
-        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold-soft); margin: 10px 0; }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 10px 0; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 10px 0; }
         
-        /* Professional Photo Border */
         .photo-frame {
-            max-width: 85%; /* Keeps it from hitting screen edges */
-            margin: 0 auto 30px;
-            padding: 15px; /* The "Border" thickness */
-            background: white;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
+            background: white; padding: 10px; margin: 20px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee;
         }
-
-        .slider-container {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            background: #f0f0f0;
-        }
-
-        .mySlides { display: none; width: 100%; height: 100%; }
+        .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
+        .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes fade { from {opacity: .7} to {opacity: 1} }
 
-        /* Countdown Style */
-        .countdown-wrap {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
-        }
-        .time-box {
+        /* Timer */
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 30px 0; }
+        .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
+        .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
+        .unit label { font-size: 0.55rem; color: white; text-transform: uppercase; }
+
+        .btn-view {
             background: var(--moose-green);
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            min-width: 50px;
-        }
-        .time-box span { display: block; font-size: 1.2rem; font-weight: bold; }
-        .time-box label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Content Cards */
-        .section-card {
-            background: white;
-            margin: 0 20px 30px;
-            padding: 40px 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(62, 76, 62, 0.1);
-        }
-
-        .section-title {
-            font-family: 'Cinzel', serif;
-            border-bottom: 1px solid var(--gold-soft);
-            display: inline-block;
-            margin-bottom: 20px;
-            padding-bottom: 5px;
-        }
-
-        /* Form Styling */
-        input, select {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .btn-submit {
-            background-color: var(--moose-green);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 5px;
-            font-weight: bold;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 15px 30px;
+            font-family: 'Cinzel';
             letter-spacing: 2px;
             cursor: pointer;
+            font-weight: bold;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
-        .btn-submit:hover { background-color: #2d382d; }
+        /* Modal Overlay */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .modal-content {
+            background: var(--cream);
+            width: 85%;
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px; right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
 
-        footer { padding: 50px; font-size: 0.7rem; letter-spacing: 2px; }
+        .entourage-title { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; text-align: left;}
+        .name-list { font-size: 0.85rem; line-height: 1.6; text-align: left;}
+
+        /* Dress Code Palette */
+        .palette { display: flex; gap: 5px; margin-top: 10px; }
+        .color-box { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <p style="letter-spacing: 5px; font-size: 0.8rem;">THE WEDDING OF</p>
+    <div class="site-frame"></div>
+
+    <div class="container">
+        <p style="letter-spacing: 4px; font-size: 0.7rem;">THE WEDDING OF</p>
         <h1>El Vincent Estomago</h1>
         <p class="cursive">and</p>
         <h1>Irine Paez</h1>
+
+        <div class="photo-frame">
+            <div class="slider">
+                <div class="mySlides" style="display:block;"><img src="wed1.png" onerror="this.src='https://via.placeholder.com/400x500?text=March+7+2026'"></div>
+                <div class="mySlides"><img src="wed2.png" onerror="this.parentElement.style.display='none'"></div>
+            </div>
+        </div>
+
+        <div class="timer">
+            <div class="unit"><span id="days">00</span><label>Days</label></div>
+            <div class="unit"><span id="hours">00</span><label>Hrs</label></div>
+            <div class="unit"><span id="mins">00</span><label>Mins</label></div>
+            <div class="unit"><span id="secs">00</span><label>Secs</label></div>
+        </div>
+
+        <button class="btn-view" onclick="openModal()">View Event Details</button>
+        
+        <p style="margin-top: 30px; font-size: 0.85rem; opacity: 0.8;">Sto. Thomas de Villanueva Parish<br>Pardo, Cebu City | 01:30 PM</p>
     </div>
 
-    <div class="photo-frame">
-        <div class="slider-container">
-            <div class="mySlides"> <img src="wed1.png" onerror="this.remove();"> </div>
-            <div class="mySlides"> <img src="wed2.png" onerror="this.remove();"> </div>
-            <div class="mySlides"> <img src="wed3.png" onerror="this.remove();"> </div>
-            <div class="mySlides"> <img src="wed4.png" onerror="this.remove();"> </div>
-            <div class="mySlides"> <img src="wed5.png" onerror="this.remove();"> </div>
-            <div class="mySlides" id="fallback" style="display:block;">
-                <img src="wed1.png" alt="Wedding Couple">
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center;">Wedding Details</h2>
+            
+            <div class="name-list">
+                <div class="entourage-title">Dress Code: Moose Green</div>
+                <p>We kindly request our guests to wear <strong>Semi-Formal Earth Tones</strong>.</p>
+                <div class="palette">
+                    <div class="color-box" style="background: #2e3b2e;"></div>
+                    <div class="color-box" style="background: #4a5d4a;"></div>
+                    <div class="color-box" style="background: #a3b18a;"></div>
+                    <div class="color-box" style="background: #dad7cd;"></div>
+                </div>
+
+                <div class="entourage-title">Parents</div>
+                <strong>Bride:</strong> Alejandro Briones & Raquel Abarcas<br>
+                <strong>Groom:</strong> Didong Enopia & Elizabeth Verano Estomago
+
+                <div class="entourage-title">Main Entourage</div>
+                <strong>Best Man:</strong> Noel Estomago<br>
+                <strong>Maid of Honor:</strong> Lovely Aras<br>
+                <strong>Groomsmen:</strong> Melquesedick Sayon, Ed Jacaban, Armando Mical, Sherwin Mical<br>
+                <strong>Bridesmaids:</strong> Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
+
+                <div class="entourage-title">Bearers & Flower Girls</div>
+                <strong>Ring Bearer:</strong> John Benedict Abarcas<br>
+                <strong>Bible Bearer:</strong> Daniel Matthew Abellana<br>
+                <strong>Coin Bearer:</strong> Leonardo Paez<br>
+                <strong>Flower Girls:</strong> Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+
+                <div class="entourage-title">Principal Sponsors</div>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+
+                <div class="entourage-title">Major Sponsors</div>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Verano Estomago
+
+                <div class="entourage-title">Secondary Sponsors</div>
+                <strong>Candle:</strong> Daryl Consuegra & Arbi Misal<br>
+                <strong>Veil:</strong> Gleen Paez<br>
+                <strong>Cord:</strong> Joselito Blanco & Sarah Blanco
             </div>
+
+            <div class="entourage-title">RSVP / Fill Station</div>
+            <a href="https://wa.me/?text=Hi! I am confirming my attendance for El Vincent and Irine's Wedding on March 7." target="_blank" class="btn-view" style="display:block; text-align:center; text-decoration:none; margin-top:20px;">Confirm via WhatsApp</a>
         </div>
     </div>
 
-    <div class="countdown-wrap">
-        <div class="time-box"><span id="days">00</span><label>Days</label></div>
-        <div class="time-box"><span id="hours">00</span><label>Hrs</label></div>
-        <div class="time-box"><span id="mins">00</span><label>Mins</label></div>
-    </div>
-
-    <div class="section-card">
-        <h3 class="section-title">The Location</h3>
-        <p><strong>Chapel of San Pedro Calungsod</strong><br>
-        SM Seaside Complex, SRP, Cebu City</p>
-        <p style="font-size: 0.9rem; font-style: italic;">Reception to follow at The Glass House</p>
-        <a href="https://maps.google.com" target="_blank" style="color: var(--moose-green); text-decoration: underline; font-size: 0.8rem;">GET DIRECTIONS</a>
-    </div>
-
-    <div class="section-card">
-        <h3 class="section-title">RSVP Station</h3>
-        <p>Please respond by November 1, 2026</p>
-        <form>
-            <input type="text" placeholder="Full Name" required>
-            <select required>
-                <option value="">Attending?</option>
-                <option value="yes">Accepts with Pleasure</option>
-                <option value="no">Declines with Regret</option>
-            </select>
-            <input type="number" placeholder="Number of Guests" min="1">
-            <button type="submit" class="btn-submit">SUBMIT ATTENDANCE</button>
-        </form>
-    </div>
-
-    <footer>
-        EL VINCENT & IRINE | 12.12.2026
-    </footer>
-
     <script>
-        // Professional Slideshow Logic
+        function openModal() { document.getElementById("detailsModal").style.display = "block"; }
+        function closeModal() { document.getElementById("detailsModal").style.display = "none"; }
+
+        const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("mins").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+            document.getElementById("secs").innerText = Math.floor((diff % (1000*60)) / 1000);
+        }, 1000);
+
         let slideIndex = 0;
         function showSlides() {
             let slides = document.querySelectorAll(".mySlides");
-            if (slides.length > 1) {
-                for (let i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+            if(slides.length > 1) {
+                slides.forEach(s => s.style.display = "none");
                 slideIndex++;
-                if (slideIndex > slides.length) {slideIndex = 1}    
+                if (slideIndex > slides.length) slideIndex = 1;
                 slides[slideIndex-1].style.display = "block";
-                setTimeout(showSlides, 4000); 
-            } else {
-                slides[0].style.display = "block";
+                setTimeout(showSlides, 3500);
             }
         }
         showSlides();
-
-        // Countdown Timer Logic
-        const target = new Date("Dec 12, 2026 15:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = target - now;
-            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        }, 1000);
     </script>
 </body>
 </html>
