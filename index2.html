@@ -13,25 +13,24 @@
 
 <style>
 
-:root {
---green:#2e3b2e;
---gold:#d4af37;
---cream:#fdfaf5;
-}
+/* ===== ORIGINAL COLORS ===== */
+:root { --moose-green:#2e3b2e; --gold:#d4af37; --cream:#fdfaf5; }
 
 body {
-margin:0;
 font-family:'Montserrat',sans-serif;
 background:var(--cream);
-color:var(--green);
+color:var(--moose-green);
+margin:0;
+padding:0;
 display:flex;
-justify-content:center;
+flex-direction:column;
+align-items:center;
 }
 
-/* GOLD FRAME */
+/* ===== ORIGINAL FRAME ===== */
 .site-frame {
 position:fixed;
-inset:0;
+top:0;left:0;right:0;bottom:0;
 border:12px solid var(--cream);
 outline:2px solid var(--gold);
 outline-offset:-10px;
@@ -39,83 +38,35 @@ pointer-events:none;
 z-index:2000;
 }
 
-/* MAIN CONTAINER */
-.container {
-max-width:480px;
-width:90%;
-padding:70px 20px;
-text-align:center;
-}
+/* ===== ORIGINAL LAYOUT ===== */
+.container { max-width:500px;width:85%;padding:60px 20px;text-align:center; }
 
-/* TYPOGRAPHY */
-.cursive {
-font-family:'Great Vibes';
-font-size:3.2rem;
-color:var(--gold);
-margin:10px 0;
-}
+h1 { font-family:'Cinzel'; font-size:1.5rem; letter-spacing:2px; margin:5px 0; }
 
-h1 {
-font-family:'Cinzel';
-font-size:1.4rem;
-letter-spacing:2px;
-}
+.cursive { font-family:'Great Vibes'; font-size:3.5rem; color:var(--gold); margin:5px 0; }
 
-/* PHOTO */
-.photo-frame {
-background:white;
-padding:12px;
-box-shadow:0 10px 25px rgba(0,0,0,.12);
-margin:25px auto;
-}
+.main-info { font-size:.9rem; letter-spacing:1px; margin:15px 0; line-height:1.6; font-weight:500; }
 
-.slider {
-aspect-ratio:4/5;
-overflow:hidden;
-}
+.photo-frame { background:white;padding:10px;margin:20px auto;box-shadow:0 10px 25px rgba(0,0,0,.1);border:1px solid #eee; }
 
-.mySlides {
-display:none;
-animation:fade 1.5s;
-}
+.slider { aspect-ratio:4/5;overflow:hidden; }
 
-.mySlides img {
-width:100%;
-height:100%;
-object-fit:cover;
-}
+.mySlides { display:none; animation:fade 1.5s; }
 
-@keyframes fade {
-from {opacity:.7}
-to {opacity:1}
-}
+.mySlides img { width:100%;height:100%;object-fit:cover; }
 
-/* COUNTDOWN */
-.timer {
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:8px;
-margin:20px 0;
-}
+@keyframes fade { from{opacity:.7} to{opacity:1} }
 
-.unit {
-background:var(--green);
-color:var(--gold);
-padding:10px 5px;
-border-radius:5px;
-border:1px solid var(--gold);
-font-size:.8rem;
-}
+/* ===== TIMER ===== */
+.timer { display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0; }
 
-.unit span {
-display:block;
-font-size:1.1rem;
-font-weight:bold;
-}
+.unit { background:var(--moose-green);color:var(--gold);padding:10px 5px;border-radius:4px;border:1px solid var(--gold); }
 
-/* BUTTON */
+.unit span { display:block;font-size:1.1rem;font-weight:bold; }
+
+/* ===== BUTTON ===== */
 .btn {
-background:var(--green);
+background:var(--moose-green);
 color:var(--gold);
 border:1px solid var(--gold);
 padding:14px;
@@ -126,84 +77,69 @@ margin-top:10px;
 letter-spacing:1px;
 }
 
-/* RSVP */
-.rsvp-box {
-background:white;
-padding:25px;
-margin-top:30px;
-border-top:3px solid var(--gold);
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
+/* ===== RSVP ===== */
+.rsvp-box { background:white;padding:25px;margin-top:30px;border:1px solid #eee;border-top:3px solid var(--gold); }
 
-/* INPUT */
-input,select {
-width:100%;
-padding:12px;
-margin:8px 0;
-border:1px solid #ddd;
-}
+input,select { width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;font-family:'Montserrat'; }
 
-/* MODAL */
+/* ===== MODALS ORIGINAL ===== */
 .modal {
 display:none;
 position:fixed;
-inset:0;
-background:rgba(0,0,0,.9);
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.92);
 z-index:3000;
-overflow:auto;
+overflow-y:auto;
 }
 
 .modal-content {
 background:var(--cream);
-width:90%;
-max-width:480px;
-margin:30px auto;
-padding:30px;
-border-radius:6px;
+width:85%;
+max-width:450px;
+margin:40px auto;
+padding:35px;
+border-radius:4px;
+position:relative;
+text-align:left;
 }
 
 .close {
-float:right;
-font-size:28px;
+position:absolute;
+top:10px;
+right:20px;
+font-size:2rem;
 cursor:pointer;
+color:var(--moose-green);
 }
 
-/* SECTION STYLE */
+/* ===== ORIGINAL EVENT DETAILS STYLE ===== */
 .section-header {
 font-family:'Cinzel';
 color:var(--gold);
 border-bottom:1px solid var(--gold);
-margin-top:20px;
-padding-bottom:5px;
+margin:20px 0 10px;
 font-size:.9rem;
 letter-spacing:1px;
+font-weight:bold;
+text-transform:uppercase;
 }
 
-.detail-row {
-font-size:.85rem;
-line-height:1.7;
-margin-top:10px;
-}
+.detail-row { font-size:.85rem; line-height:1.8; margin-bottom:15px; }
 
-/* COLOR SWATCH */
-.palette {
-display:flex;
-gap:10px;
-margin-top:10px;
-justify-content:center;
-}
+.role-title { font-weight:600;color:var(--moose-green);display:block;margin-top:5px; }
+
+.color-palette { display:flex;gap:12px;margin:10px 0; }
 
 .swatch {
-width:30px;
-height:30px;
-border-radius:50%;
-border:1px solid #ccc;
+width:32px;height:32px;border-radius:50%;
+border:1px solid rgba(0,0,0,.1);
+box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
 
-/* WELCOME SCREEN */
+/* ===== WELCOME SCREEN ===== */
 #welcomeScreen {
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:linear-gradient(#fdfaf5,#efe6d8);
 z-index:4000;
 display:flex;
@@ -223,23 +159,22 @@ color:var(--gold);
 margin-top:20px;
 padding:14px 30px;
 border:1px solid var(--gold);
-background:var(--green);
+background:var(--moose-green);
 color:var(--gold);
 font-family:'Cinzel';
 cursor:pointer;
 }
 
-/* MUSIC BUTTON */
+/* ===== MUSIC BUTTON ===== */
 #musicBtn {
 position:fixed;
 bottom:20px;
 right:20px;
-width:48px;
-height:48px;
-border-radius:50%;
-background:var(--green);
+background:var(--moose-green);
 color:var(--gold);
 border:1px solid var(--gold);
+border-radius:50%;
+width:50px;height:50px;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -247,17 +182,9 @@ cursor:pointer;
 z-index:3500;
 }
 
-/* SCROLL ANIMATION */
-.animate {
-opacity:0;
-transform:translateY(30px);
-transition:1s ease;
-}
-
-.animate.show {
-opacity:1;
-transform:none;
-}
+/* ===== SCROLL ANIMATION ===== */
+.animate { opacity:0; transform:translateY(30px); transition:1s ease; }
+.animate.show { opacity:1; transform:none; }
 
 </style>
 </head>
@@ -282,11 +209,13 @@ transform:none;
 
 <div class="container">
 
-<p>YOU ARE INVITED TO THE WEDDING OF</p>
+<p style="letter-spacing:4px;font-size:.75rem">YOU ARE INVITED TO THE WEDDING OF</p>
+
 <p class="cursive animate">El Vincent & Irine</p>
+
 <h1 class="animate">MARCH 7, 2026</h1>
 
-<div class="animate">
+<div class="main-info animate">
 <strong>01:30 PM</strong><br>
 Sto. Thomas de Villanueva Parish<br>
 Pardo, Cebu City
@@ -300,92 +229,156 @@ Pardo, Cebu City
 </div>
 
 <div class="timer animate">
-<div class="unit"><span id="days">00</span>Days</div>
-<div class="unit"><span id="hours">00</span>Hrs</div>
-<div class="unit"><span id="mins">00</span>Mins</div>
-<div class="unit"><span id="secs">00</span>Secs</div>
+<div class="unit"><span id="days">00</span><label>Days</label></div>
+<div class="unit"><span id="hours">00</span><label>Hrs</label></div>
+<div class="unit"><span id="mins">00</span><label>Mins</label></div>
+<div class="unit"><span id="secs">00</span><label>Secs</label></div>
 </div>
 
 <button class="btn animate" onclick="openModal('detailsModal')">View Wedding Details</button>
 
 <div class="rsvp-box animate">
+
+<h3 style="font-family:'Cinzel';font-size:.9rem;margin:0 0 10px">RSVP Station</h3>
+
 <input id="guestName" placeholder="Your Full Name">
+
 <select id="isAttending">
 <option value="Yes">Yes, I'm attending</option>
 <option value="No">No, I can't make it</option>
 </select>
-<button class="btn" onclick="submitRsvp()">Submit RSVP</button>
-</div>
+
+<button class="btn" onclick="submitRsvp()">SUBMIT RSVP</button>
+
+<!-- RESTORED BUTTON -->
+<button class="btn"
+onclick="openModal('guestModal')"
+style="background:none;border:none;color:var(--moose-green);font-size:.7rem;text-decoration:underline;font-family:'Montserrat';">
+Who's attending?
+</button>
 
 </div>
 
-<!-- DETAILS MODAL -->
+</div>
+
+<!-- DETAILS MODAL (UNCHANGED STRUCTURE) -->
 <div id="detailsModal" class="modal">
 <div class="modal-content">
 
 <span class="close" onclick="closeModal('detailsModal')">&times;</span>
 
-<h2 style="text-align:center;font-family:Cinzel;">Wedding Entourage</h2>
+<h2 style="font-family:'Cinzel';text-align:center;color:var(--moose-green);margin-bottom:20px">
+Wedding Entourage
+</h2>
 
 <div class="detail-row">
+
 <div class="section-header">Venues</div>
-Ceremony — Sto. Thomas Parish @ 1:30 PM<br>
-Reception — Parish Function Hall
+
+<span class="role-title">Ceremony</span>
+Sto. Thomas de Villanueva Parish, Pardo, Cebu City @ 1:30 PM
+
+<span class="role-title">Reception</span>
+Sto. Thomas de Villanueva Parish Function Hall
+
 </div>
 
 <div class="detail-row">
-<div class="section-header">Dress Code — Moose Green</div>
-Semi Formal Earth Tones
-<div class="palette">
+
+<div class="section-header">Dress Code: Moose Green</div>
+
+Semi-Formal Earth Tones
+
+<div class="color-palette">
 <div class="swatch" style="background:#2e3b2e"></div>
 <div class="swatch" style="background:#4a5d4a"></div>
 <div class="swatch" style="background:#8c9c8c"></div>
 <div class="swatch" style="background:#d4af37"></div>
 </div>
+
 </div>
 
 <div class="detail-row">
+
 <div class="section-header">Parents</div>
-Bride — Alejandro Briones & Raquel Abarcas<br>
-Groom — Didong Enopia & Elizabeth Estomago
+
+<span class="role-title">Of the Bride</span>
+Alejandro Briones & Raquel Abarcas
+
+<span class="role-title">Of the Groom</span>
+Didong Enopia & Elizabeth Verano Estomago
+
 </div>
 
 <div class="detail-row">
+
 <div class="section-header">Honor Graduates</div>
-Best Man — Noel Estomago<br>
-Maid of Honor — Lovely Aras
+
+<span class="role-title">Best Man</span> Noel Estomago
+
+<span class="role-title">Maid of Honor</span> Lovely Aras
+
 </div>
 
 <div class="detail-row">
-<div class="section-header">Groomsmen</div>
+
+<div class="section-header">Groomsmen & Bridesmaids</div>
+
+<span class="role-title">Groomsmen</span>
 Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
-</div>
 
-<div class="detail-row">
-<div class="section-header">Bridesmaids</div>
+<span class="role-title">Bridesmaids</span>
 Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
+
 </div>
 
 <div class="detail-row">
+
 <div class="section-header">Sponsors</div>
-Principal — Ariel Jacalan, Ma Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial<br>
-Major — Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Elizabeth Estomago
+
+<span class="role-title">Principal Sponsors</span>
+Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+
+<span class="role-title">Major Sponsors</span>
+Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Elizabeth Verano Estomago
+
 </div>
 
 <div class="detail-row">
+
 <div class="section-header">Bearers & Flower Girls</div>
-Ring — John Benedict Abarcas<br>
-Bible — Daniel Matthew Abellana<br>
-Coin — Leonardo Paez<br>
-Flower Girls — Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+
+<span class="role-title">Ring Bearer</span> John Benedict Abarcas
+<span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
+<span class="role-title">Coin Bearer</span> Leonardo Paez
+
+<span class="role-title">Flower Girls</span>
+Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+
 </div>
 
 <div class="detail-row">
+
 <div class="section-header">Secondary Sponsors</div>
-Veil — Gleen Paez & Flordeliza Bacalso<br>
-Cord — Joselito Blanco & Sarah Sayon<br>
-Candle — Daryl Consuegra & Arbi Misal
+
+<span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
+<span class="role-title">Cord</span> Joselito Blanco & Sarah Sayon
+<span class="role-title">Candle</span> Daryl Consuegra & Arbi Misal
+
 </div>
+
+</div>
+</div>
+
+<!-- GUEST LIST MODAL -->
+<div id="guestModal" class="modal">
+<div class="modal-content">
+
+<span class="close" onclick="closeModal('guestModal')">&times;</span>
+
+<h2 style="font-family:'Cinzel';text-align:center;">Confirmed Guests</h2>
+
+<ul id="attendingList" style="list-style:none;padding:0;font-size:.9rem;"></ul>
 
 </div>
 </div>
@@ -405,33 +398,57 @@ const db=firebase.firestore();
 async function submitRsvp(){
 const name=guestName.value;
 const status=isAttending.value;
-if(!name) return alert("Please enter name");
-await db.collection("weddingGuests").add({name,status});
-alert("RSVP Submitted!");
+if(!name) return alert("Please enter your name");
+
+await db.collection("weddingGuests").add({
+name,status,
+timestamp:firebase.firestore.FieldValue.serverTimestamp()
+});
+
+alert("RSVP Successful!");
 guestName.value="";
 }
 
-/* MODAL */
-function openModal(id){document.getElementById(id).style.display="block"}
-function closeModal(id){document.getElementById(id).style.display="none"}
+/* LOAD GUESTS */
+async function loadGuests(){
+attendingList.innerHTML="Loading...";
+const snap=await db.collection("weddingGuests").orderBy("timestamp","desc").get();
+attendingList.innerHTML="";
+snap.forEach(doc=>{
+if(doc.data().status==="Yes"){
+attendingList.innerHTML+=`<li style="padding:8px 0;border-bottom:1px solid #eee">🌿 ${doc.data().name}</li>`;
+}
+});
+}
+
+/* MODALS */
+function openModal(id){
+document.getElementById(id).style.display="block";
+if(id==="guestModal") loadGuests();
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+}
 
 /* SLIDER */
-let i=0;
+let s=0;
 setInterval(()=>{
-let s=document.querySelectorAll(".mySlides");
-s.forEach(x=>x.style.display="none");
-i=(i+1)%s.length;
-s[i].style.display="block";
+const slides=document.querySelectorAll(".mySlides");
+slides.forEach(x=>x.style.display="none");
+s=(s+1)%slides.length;
+slides[s].style.display="block";
 },3500);
 
 /* COUNTDOWN */
-const wedding=new Date("March 7, 2026 13:30:00").getTime();
+const weddingDate=new Date("March 7, 2026 13:30:00").getTime();
+
 setInterval(()=>{
-let d=wedding-new Date().getTime();
-days.innerHTML=Math.floor(d/86400000);
-hours.innerHTML=Math.floor(d%86400000/3600000);
-mins.innerHTML=Math.floor(d%3600000/60000);
-secs.innerHTML=Math.floor(d%60000/1000);
+const diff=weddingDate-new Date().getTime();
+days.innerHTML=Math.floor(diff/86400000);
+hours.innerHTML=Math.floor(diff%86400000/3600000);
+mins.innerHTML=Math.floor(diff%3600000/60000);
+secs.innerHTML=Math.floor(diff%60000/1000);
 },1000);
 
 /* WELCOME + MUSIC */
@@ -442,8 +459,13 @@ bgMusic.play();
 
 let playing=true;
 musicBtn.onclick=()=>{
-if(playing){bgMusic.pause();musicBtn.innerHTML="▶";}
-else{bgMusic.play();musicBtn.innerHTML="♫";}
+if(playing){
+bgMusic.pause();
+musicBtn.innerHTML="▶";
+}else{
+bgMusic.play();
+musicBtn.innerHTML="♫";
+}
 playing=!playing;
 };
 
