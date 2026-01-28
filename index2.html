@@ -1,406 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding of El Vincent & Irine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root { --moose-green: #2e3b2e; --gold: #d4af37; --cream: #fdfaf5; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--moose-green); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        
+        /* Welcome Invitation Overlay */
+        #welcomeOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--moose-green); color: var(--gold);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 5000; transition: opacity 1s ease-in-out; text-align: center;
+        }
+        #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
 
-<title>Wedding of El Vincent & Irine</title>
+        /* Fixed Gold Border */
+        .site-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; border: 12px solid var(--cream); outline: 2px solid var(--gold); outline-offset: -10px; pointer-events: none; z-index: 2000; }
+        
+        .container { max-width: 500px; width: 85%; padding: 60px 20px; text-align: center; }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
+        
+        .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
+        
+        .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
+        .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
+        .mySlides img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes fade { from {opacity: .7} to {opacity: 1} }
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
+        .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
+        .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
+        .unit label { font-size: 0.5rem; color: white; text-transform: uppercase; }
 
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-<style>
+        .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; }
 
-/* ===== COLORS ===== */
-:root { --moose-green:#2e3b2e; --gold:#d4af37; --cream:#fdfaf5; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; overflow-y: auto; }
+        .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
+        .close { position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
+        
+        .section-header { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; }
+        .detail-row { font-size: 0.85rem; line-height: 1.8; margin-bottom: 15px; }
+        .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 5px; }
 
-body {
-font-family:'Montserrat',sans-serif;
-background:var(--cream);
-color:var(--moose-green);
-margin:0;
-display:flex;
-flex-direction:column;
-align-items:center;
-overflow-x:hidden;
-}
-
-/* FRAME */
-.site-frame {
-position:fixed; inset:0;
-border:12px solid var(--cream);
-outline:2px solid var(--gold);
-outline-offset:-10px;
-pointer-events:none;
-z-index:2000;
-}
-
-.container {
-max-width:500px;
-width:85%;
-padding:60px 20px;
-text-align:center;
-}
-
-.cursive {
-font-family:'Great Vibes';
-font-size:3.5rem;
-color:var(--gold);
-}
-
-h1 {
-font-family:'Cinzel';
-letter-spacing:2px;
-}
-
-/* PHOTO FRAME */
-.photo-frame {
-background:white;
-padding:10px;
-margin:20px auto;
-box-shadow:0 10px 25px rgba(0,0,0,.1);
-}
-
-/* SLIDER IMPROVED */
-.slider { aspect-ratio:4/5; overflow:hidden; position:relative; }
-
-.mySlides {
-position:absolute;
-width:100%;
-height:100%;
-opacity:0;
-transition:opacity 1.5s ease, transform 4s ease;
-}
-
-.mySlides.active {
-opacity:1;
-transform:scale(1.05);
-}
-
-.mySlides img {
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-/* TIMER */
-.timer {
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:8px;
-margin:20px 0;
-}
-
-.unit {
-background:var(--moose-green);
-color:var(--gold);
-padding:10px;
-border-radius:4px;
-border:1px solid var(--gold);
-}
-
-/* BUTTON */
-.btn {
-background:var(--moose-green);
-color:var(--gold);
-border:1px solid var(--gold);
-padding:14px;
-font-family:'Cinzel';
-width:100%;
-margin-top:10px;
-cursor:pointer;
-}
-
-/* RSVP */
-.rsvp-box {
-background:white;
-padding:25px;
-margin-top:30px;
-border-top:3px solid var(--gold);
-}
-
-input,select,textarea {
-width:100%;
-padding:12px;
-margin:8px 0;
-border:1px solid #ddd;
-}
-
-/* MODAL */
-.modal {
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.92);
-z-index:3000;
-overflow-y:auto;
-}
-
-.modal-content {
-background:var(--cream);
-width:85%;
-max-width:450px;
-margin:40px auto;
-padding:35px;
-position:relative;
-}
-
-.close {
-position:absolute;
-right:20px;
-top:10px;
-font-size:2rem;
-cursor:pointer;
-}
-
-/* WELCOME */
-#welcomeScreen {
-position:fixed;
-inset:0;
-background:linear-gradient(#fdfaf5,#efe6d8);
-z-index:4000;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-overflow:hidden;
-}
-
-#welcomeBtn {
-margin-top:20px;
-padding:14px 30px;
-border:1px solid var(--gold);
-background:var(--moose-green);
-color:var(--gold);
-font-family:'Cinzel';
-cursor:pointer;
-}
-
-/* ROSES */
-.rose {
-position:absolute;
-top:-50px;
-width:25px;
-animation:fall linear infinite;
-opacity:.8;
-}
-
-@keyframes fall {
-to { transform:translateY(110vh) rotate(360deg); }
-}
-
-/* MUSIC */
-#musicBtn {
-position:fixed;
-bottom:20px;
-right:20px;
-width:50px;
-height:50px;
-border-radius:50%;
-background:var(--moose-green);
-color:var(--gold);
-border:1px solid var(--gold);
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-z-index:3500;
-}
-
-</style>
+        .color-palette { display: flex; gap: 12px; margin: 10px 0; }
+        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
 </head>
-
 <body>
 
-<!-- WELCOME -->
-<div id="welcomeScreen">
-<h2 style="font-family:Great Vibes;color:#d4af37;font-size:3rem">El Vincent & Irine</h2>
-<p>You Are Invited</p>
-<button id="welcomeBtn">Tap To Open Invitation</button>
-</div>
+    <div id="welcomeOverlay">
+        <p style="letter-spacing: 5px; font-size: 0.8rem;">THE WEDDING OF</p>
+        <p class="cursive" style="font-size: 4rem;">El Vincent & Irine</p>
+        <p style="font-family: 'Cinzel'; font-size: 1.2rem; margin-top: 20px;">03 . 07 . 2026</p>
+        <button class="btn" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="enterSite()">Open Invitation</button>
+    </div>
 
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-<button id="musicBtn">♫</button>
+    <div class="site-frame"></div>
 
-<div class="site-frame"></div>
+    <div class="container">
+        <p style="letter-spacing: 4px; font-size: 0.75rem;">YOU ARE INVITED TO THE WEDDING OF</p>
+        <p class="cursive">El Vincent & Irine</p>
+        <h1>MARCH 7, 2026</h1>
+        
+        <div class="main-info">
+            <strong>01:30 PM</strong><br>
+            Sto. Thomas de Villanueva Parish<br>
+            Pardo, Cebu City
+        </div>
 
-<div class="container">
+        <div class="photo-frame">
+            <div class="slider">
+                <div class="mySlides" style="display:block;"><img src="wed1.png" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
+                <div class="mySlides"><img src="wed2.png" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
+            </div>
+        </div>
 
-<p>YOU ARE INVITED TO THE WEDDING OF</p>
-<p class="cursive">El Vincent & Irine</p>
-<h1>MARCH 7, 2026</h1>
+        <div class="timer">
+            <div class="unit"><span id="days">00</span><label>Days</label></div>
+            <div class="unit"><span id="hours">00</span><label>Hrs</label></div>
+            <div class="unit"><span id="mins">00</span><label>Mins</label></div>
+            <div class="unit"><span id="secs">00</span><label>Secs</label></div>
+        </div>
 
-<div>
-<strong>01:30 PM</strong><br>
-Sto. Thomas de Villanueva Parish<br>
-Pardo, Cebu City
-</div>
+        <button class="btn" onclick="openModal('detailsModal')">View Wedding Details</button>
+        
+        <div class="rsvp-box">
+            <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
+            <p id="limitMsg" style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">Max 3 responses per device</p>
+            <input type="text" id="guestName" placeholder="Your Full Name">
+            <select id="isAttending">
+                <option value="Yes">Yes, I'm attending</option>
+                <option value="No">No, I can't make it</option>
+            </select>
+            <button class="btn" id="submitRsvp">
+                <span id="btnText">SUBMIT RSVP</span>
+                <div class="loader" id="loader"></div>
+            </button>
+            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--moose-green); font-size:0.7rem; text-decoration:underline; font-family:'Montserrat';">Who's attending?</button>
+        </div>
+    </div>
 
-<!-- MAP BUTTONS -->
-<button class="btn" onclick="window.open('https://maps.google.com/?q=Sto.+Thomas+de+Villanueva+Parish+Pardo+Cebu')">
-View Ceremony Location
-</button>
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('detailsModal')">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Entourage</h2>
+            
+            <div class="detail-row">
+                <div class="section-header">Venues</div>
+                <span class="role-title">Ceremony</span>
+                Sto. Thomas de Villanueva Parish, Pardo, Cebu City @ 1:30 PM
+                <span class="role-title">Reception</span>
+                Sto. Thomas de Villanueva Parish Function Hall
+            </div>
 
-<button class="btn" onclick="window.open('https://maps.google.com/?q=Sto.+Thomas+de+Villanueva+Parish+Function+Hall')">
-View Reception Location
-</button>
+            <div class="detail-row">
+                <div class="section-header">Dress Code: Moose Green</div>
+                Semi-Formal Earth Tones
+                <div class="color-palette">
+                    <div class="swatch" style="background-color: #2e3b2e;"></div>
+                    <div class="swatch" style="background-color: #4a5d4a;"></div>
+                    <div class="swatch" style="background-color: #8c9c8c;"></div>
+                    <div class="swatch" style="background-color: #d4af37;"></div>
+                </div>
+            </div>
 
-<div class="photo-frame">
-<div class="slider">
-<div class="mySlides active"><img src="wed1.png"></div>
-<div class="mySlides"><img src="wed2.png"></div>
-</div>
-</div>
+            <div class="detail-row">
+                <div class="section-header">Parents</div>
+                <span class="role-title">Of the Bride</span>
+                Alejandro Briones & Raquel Abarcas
+                <span class="role-title">Of the Groom</span>
+                Didong Enopia & Elizabeth Verano Estomago
+            </div>
 
-<div class="timer">
-<div class="unit"><span id="days">00</span>Days</div>
-<div class="unit"><span id="hours">00</span>Hrs</div>
-<div class="unit"><span id="mins">00</span>Mins</div>
-<div class="unit"><span id="secs">00</span>Secs</div>
-</div>
+            <div class="detail-row">
+                <div class="section-header">Honor Graduates</div>
+                <span class="role-title">Best Man</span> Noel Estomago
+                <span class="role-title">Maid of Honor</span> Lovely Aras
+            </div>
 
-<div class="rsvp-box">
+            <div class="detail-row">
+                <div class="section-header">Groomsmen & Bridesmaids</div>
+                <span class="role-title">Groomsmen</span>
+                Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
+                <span class="role-title">Bridesmaids</span>
+                Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
+            </div>
 
-<h3>RSVP Station</h3>
+            <div class="detail-row">
+                <div class="section-header">Sponsors</div>
+                <span class="role-title">Principal Sponsors</span>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+                <span class="role-title">Major Sponsors</span>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Verano Estomago
+            </div>
 
-<input id="guestName" placeholder="Your Full Name">
-<select id="isAttending">
-<option value="Yes">Yes, I'm attending</option>
-<option value="No">No, I can't make it</option>
-</select>
+            <div class="detail-row">
+                <div class="section-header">Bearers & Flower Girls</div>
+                <span class="role-title">Ring Bearer</span> John Benedict Abarcas
+                <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
+                <span class="role-title">Coin Bearer</span> Leonardo Paez
+                <span class="role-title">Flower Girls</span>
+                Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+            </div>
 
-<button class="btn" onclick="submitRsvp()">Submit RSVP</button>
+            <div class="detail-row">
+                <div class="section-header">Secondary Sponsors</div>
+                <span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
+                <span class="role-title">Cord</span> Joselito Blanco & Sarah Sayon
+                <span class="role-title">Candle</span> Daryl Consuegra & Arbi Misal
+            </div>
+        </div>
+    </div>
 
-<button class="btn" style="background:none;border:none;color:#2e3b2e;text-decoration:underline"
-onclick="openModal('guestModal')">
-Who's attending?
-</button>
+    <div id="guestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('guestModal')">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center;">Confirmed Guests</h2>
+            <ul id="attendingList" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
+        </div>
+    </div>
 
-<hr>
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
+            authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
+            projectId: "react-time-tracker-cdbd2",
+            storageBucket: "react-time-tracker-cdbd2.firebasestorage.app",
+            messagingSenderId: "1043791910954",
+            appId: "1:1043791910954:web:f56c707e26ab592c56cb53"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-<h3>Leave Your Wishes 💌</h3>
+        // Welcome Transition
+        function enterSite() {
+            document.getElementById('welcomeOverlay').classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('welcomeOverlay').style.display = 'none';
+            }, 1000);
+        }
 
-<input id="wishName" placeholder="Your Name">
-<textarea id="wishText" placeholder="Write your message"></textarea>
-<button class="btn" onclick="sendWish()">Send Wish</button>
+        // RSVP Logic with 3-response limit
+        document.getElementById('submitRsvp').onclick = async () => {
+            const name = document.getElementById('guestName').value;
+            const status = document.getElementById('isAttending').value;
+            const btn = document.getElementById('submitRsvp');
+            const loader = document.getElementById('loader');
+            const txt = document.getElementById('btnText');
 
-</div>
+            // Device Registry Check
+            let rsvpCount = parseInt(localStorage.getItem('rsvp_count') || "0");
+            if (rsvpCount >= 3) {
+                return alert("You have reached the maximum of 3 RSVP responses for this device.");
+            }
 
-</div>
+            if(!name) return alert("Please enter your name");
+            
+            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
+            
+            try {
+                await db.collection("weddingGuests").add({ 
+                    name, 
+                    status, 
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                });
+                
+                // Increment registry count
+                localStorage.setItem('rsvp_count', rsvpCount + 1);
+                
+                alert("RSVP Successful!");
+                document.getElementById('guestName').value = "";
+                
+                if (rsvpCount + 1 >= 3) {
+                    btn.style.display = 'none';
+                    document.getElementById('limitMsg').innerText = "Maximum responses reached.";
+                }
+            } catch (e) { 
+                alert("Error: " + e.message); 
+            } finally { 
+                btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; 
+            }
+        };
 
-<!-- GUEST MODAL -->
-<div id="guestModal" class="modal">
-<div class="modal-content">
-<span class="close" onclick="closeModal('guestModal')">&times;</span>
-<h2>Confirmed Guests</h2>
-<ul id="attendingList"></ul>
-</div>
-</div>
+        // UI Helpers
+        function openModal(id) { document.getElementById(id).style.display = "block"; if(id==='guestModal') loadGuests(); }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        
+        async function loadGuests() {
+            const list = document.getElementById('attendingList');
+            list.innerHTML = "Loading...";
+            const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
+            list.innerHTML = "";
+            snap.forEach(doc => { 
+                if(doc.data().status === "Yes") 
+                    list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; 
+            });
+        }
 
-<script>
+        // Image Slider
+        let sIdx = 0;
+        function play() {
+            let s = document.querySelectorAll(".mySlides");
+            if(s.length > 0) {
+                s.forEach(x => x.style.display = "none");
+                sIdx = (sIdx + 1) % s.length; 
+                s[sIdx].style.display = "block";
+            }
+            setTimeout(play, 3500);
+        }
+        play();
 
-/* FIREBASE */
-firebase.initializeApp({
-apiKey:"AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
-authDomain:"react-time-tracker-cdbd2.firebaseapp.com",
-projectId:"react-time-tracker-cdbd2"
-});
+        // Countdown Timer
+        const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
+        setInterval(() => {
+            const diff = weddingDate - new Date().getTime();
+            if (diff < 0) return;
+            document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+        }, 1000);
 
-const db=firebase.firestore();
-
-/* RSVP */
-async function submitRsvp(){
-if(!guestName.value) return alert("Enter name");
-await db.collection("weddingGuests").add({
-name:guestName.value,
-status:isAttending.value,
-timestamp:firebase.firestore.FieldValue.serverTimestamp()
-});
-alert("RSVP Submitted!");
-guestName.value="";
-}
-
-/* LOAD GUESTS */
-async function loadGuests(){
-attendingList.innerHTML="";
-const snap=await db.collection("weddingGuests").orderBy("timestamp","desc").get();
-snap.forEach(doc=>{
-if(doc.data().status==="Yes"){
-attendingList.innerHTML+=`<li>🌿 ${doc.data().name}</li>`;
-}
-});
-}
-
-/* WISH WALL */
-async function sendWish(){
-if(!wishName.value||!wishText.value) return alert("Fill all fields");
-await db.collection("weddingWishes").add({
-name:wishName.value,
-message:wishText.value,
-time:firebase.firestore.FieldValue.serverTimestamp()
-});
-alert("Wish Sent ❤️");
-wishName.value="";
-wishText.value="";
-}
-
-/* MODAL */
-function openModal(id){
-document.getElementById(id).style.display="block";
-if(id==="guestModal") loadGuests();
-}
-function closeModal(id){
-document.getElementById(id).style.display="none";
-}
-
-/* SLIDER */
-let slide=0;
-setInterval(()=>{
-const slides=document.querySelectorAll(".mySlides");
-slides.forEach(s=>s.classList.remove("active"));
-slide=(slide+1)%slides.length;
-slides[slide].classList.add("active");
-},3500);
-
-/* COUNTDOWN */
-const weddingDate=new Date("March 7, 2026 13:30:00").getTime();
-setInterval(()=>{
-let d=weddingDate-new Date().getTime();
-days.innerHTML=Math.floor(d/86400000);
-hours.innerHTML=Math.floor(d%86400000/3600000);
-mins.innerHTML=Math.floor(d%3600000/60000);
-secs.innerHTML=Math.floor(d%60000/1000);
-},1000);
-
-/* MUSIC + WELCOME + ROSES */
-welcomeBtn.onclick=()=>{
-welcomeScreen.style.display="none";
-bgMusic.play();
-};
-
-let playing=true;
-musicBtn.onclick=()=>{
-playing?bgMusic.pause():bgMusic.play();
-musicBtn.innerHTML=playing?"▶":"♫";
-playing=!playing;
-};
-
-/* ROSE GENERATOR */
-for(let i=0;i<15;i++){
-let r=document.createElement("img");
-r.src="rose.png";
-r.className="rose";
-r.style.left=Math.random()*100+"%";
-r.style.animationDuration=(5+Math.random()*5)+"s";
-welcomeScreen.appendChild(r);
-}
-
-</script>
-
+        // Initial check for RSVP button
+        window.onload = () => {
+            let count = parseInt(localStorage.getItem('rsvp_count') || "0");
+            if (count >= 3) {
+                document.getElementById('submitRsvp').style.display = 'none';
+                document.getElementById('limitMsg').innerText = "Maximum responses reached.";
+            }
+        };
+    </script>
 </body>
 </html>
