@@ -4,244 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding of El Vincent & Irine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
             --moose-green: #2e3b2e;
-            --gold-metallic: #d4af37;
-            --cream-bg: #fdfaf5;
+            --gold: #d4af37;
+            --cream: #fdfaf5;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--cream-bg);
+            background-color: var(--cream);
             color: var(--moose-green);
-            margin: 0;
-            padding: 20px; /* Space for the golden border */
-            min-height: 100vh;
-            box-sizing: border-box;
-            position: relative;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Golden Ornate Site Border */
-        body::before {
-            content: "";
+        /* Fixed Professional Border - Will not break on scroll */
+        .site-frame {
             position: fixed;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 2px solid var(--gold-metallic);
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 12px solid var(--cream);
+            outline: 2px solid var(--gold);
+            outline-offset: -10px;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 2000;
         }
-
-        /* Decorative Edges */
-        .corner {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--gold-metallic);
-            z-index: 10000;
-            pointer-events: none;
-        }
-        .top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; border-radius: 5px 0 0 0; }
-        .top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; border-radius: 0 5px 0 0; }
-        .bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; border-radius: 0 0 0 5px; }
-        .bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; border-radius: 0 0 5px 0; }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 500px;
+            width: 85%;
+            padding: 60px 20px;
             text-align: center;
         }
 
-        .hero { padding: 40px 10px; }
-        h1 { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--moose-green); margin: 5px 0; }
-        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: var(--gold-metallic); margin: 5px 0; }
-
-        /* Professional Photo Frame */
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 10px 0; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 10px 0; }
+        
+        /* Photo Frame */
         .photo-frame {
-            background: white;
-            padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid #eee;
-            margin: 20px auto;
-            width: 85%;
-            border-radius: 2px;
+            background: white; padding: 10px; margin: 20px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee;
         }
-
-        .slider-container {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            background: #f0f0f0;
-        }
-
+        .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
         .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes fade { from {opacity: .7} to {opacity: 1} }
 
-        @keyframes fade { from {opacity: .4} to {opacity: 1} }
+        /* Timer */
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 30px 0; }
+        .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
+        .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
+        .unit label { font-size: 0.55rem; color: white; text-transform: uppercase; }
 
-        /* Moving/Animated Countdown */
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 30px 0;
-        }
-
-        .time-box {
+        /* Action Button */
+        .btn-view {
             background: var(--moose-green);
-            color: var(--gold-metallic);
-            width: 65px;
-            padding: 10px 0;
-            border-radius: 8px;
-            border: 1px solid var(--gold-metallic);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Subtle glow animation for the timer */
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0px var(--gold-metallic); }
-            50% { box-shadow: 0 0 8px var(--gold-metallic); }
-            100% { box-shadow: 0 0 0px var(--gold-metallic); }
-        }
-        .time-box { animation: pulse 3s infinite; }
-
-        .time-box span { display: block; font-size: 1.4rem; font-weight: bold; }
-        .time-box label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: white; }
-
-        .card {
-            background: white;
-            padding: 30px 20px;
-            margin: 20px 10px;
-            border-radius: 15px;
-            border-top: 3px solid var(--gold-metallic);
-        }
-
-        .btn-submit {
-            background: var(--moose-green);
-            color: var(--gold-metallic);
-            border: 1px solid var(--gold-metallic);
-            padding: 15px;
-            width: 100%;
-            border-radius: 5px;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 15px 30px;
+            font-family: 'Cinzel';
+            letter-spacing: 2px;
+            cursor: pointer;
             font-weight: bold;
-            margin-top: 15px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-view:hover { background: var(--gold); color: white; }
+
+        /* Modal Overlay for Details */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        .modal-content {
+            background: var(--cream);
+            width: 85%;
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 4px;
+            position: relative;
+            text-align: left;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px; right: 20px;
+            font-size: 2rem;
+            color: var(--moose-green);
             cursor: pointer;
         }
 
-        footer { padding-bottom: 40px; font-size: 0.8rem; opacity: 0.6; }
+        .entourage-title { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; }
+        .name-list { font-size: 0.85rem; line-height: 1.6; }
 
     </style>
 </head>
 <body>
 
-    <div class="corner top-left"></div>
-    <div class="corner top-right"></div>
-    <div class="corner bottom-left"></div>
-    <div class="corner bottom-right"></div>
+    <div class="site-frame"></div>
 
     <div class="container">
-        <div class="hero">
-            <p style="letter-spacing: 4px; font-size: 0.7rem;">WE ARE GETTING MARRIED</p>
-            <h1>El Vincent Estomago</h1>
-            <p class="cursive">and</p>
-            <h1>Irine Paez</h1>
-        </div>
+        <p style="letter-spacing: 4px; font-size: 0.7rem;">THE WEDDING OF</p>
+        <h1>El Vincent Estomago</h1>
+        <p class="cursive">and</p>
+        <h1>Irine Paez</h1>
 
         <div class="photo-frame">
-            <div class="slider-container" id="slider">
-                <div class="mySlides"><img src="wed1.png" onerror="this.parentElement.style.display='none'"></div>
+            <div class="slider">
+                <div class="mySlides" style="display:block;"><img src="wed1.png" onerror="this.src='https://via.placeholder.com/400x500?text=March+7+2026'"></div>
                 <div class="mySlides"><img src="wed2.png" onerror="this.parentElement.style.display='none'"></div>
-                <div class="mySlides"><img src="wed3.png" onerror="this.parentElement.style.display='none'"></div>
-                <div class="mySlides"><img src="wed4.png" onerror="this.parentElement.style.display='none'"></div>
-                <div class="mySlides"><img src="wed5.png" onerror="this.parentElement.style.display='none'"></div>
-                <div class="mySlides" style="display: block;"><img src="wed1.png"></div>
             </div>
         </div>
 
-        <div class="countdown-container">
-            <div class="time-box"><span id="days">00</span><label>Days</label></div>
-            <div class="time-box"><span id="hours">00</span><label>Hrs</label></div>
-            <div class="time-box"><span id="mins">00</span><label>Mins</label></div>
-            <div class="time-box"><span id="secs">00</span><label>Secs</label></div>
+        <div class="timer">
+            <div class="unit"><span id="days">00</span><label>Days</label></div>
+            <div class="unit"><span id="hours">00</span><label>Hrs</label></div>
+            <div class="unit"><span id="mins">00</span><label>Mins</label></div>
+            <div class="unit"><span id="secs">00</span><label>Secs</label></div>
         </div>
 
-        <div class="card">
-            <h3 style="font-family: 'Cinzel'; margin-top: 0;">The Ceremony</h3>
-            <p style="font-size: 1.1rem; font-weight: bold;">March 7, 2026 | 01:30 PM</p>
-            <p><strong>Sto. Thomas Villanueva Parish</strong><br>
-            Pardo, Cebu City, Philippines</p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="font-style: italic; font-size: 0.9rem;">Reception to follow at [Venue Name]</p>
-        </div>
+        <button class="btn-view" onclick="openModal()">View Event Details</button>
 
-        <div class="card">
-            <h3 style="font-family: 'Cinzel'; margin-top: 0;">Fill Station</h3>
-            <form>
-                <input type="text" placeholder="Full Name" style="width:100%; padding:12px; margin:5px 0; border:1px solid #ddd; border-radius:5px;" required>
-                <select style="width:100%; padding:12px; margin:5px 0; border:1px solid #ddd; border-radius:5px;" required>
-                    <option value="">Will you attend?</option>
-                    <option>Yes, with pleasure</option>
-                    <option>Sorry, I can't</option>
-                </select>
-                <button type="submit" class="btn-submit">CONFIRM ATTENDANCE</button>
-            </form>
-        </div>
+        <p style="margin-top: 30px; font-size: 0.9rem;">Sto. Thomas de Villanueva Parish<br>Pardo, Cebu City</p>
+    </div>
 
-        <footer>
-            #ElVincentAndIrine2026
-        </footer>
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center; margin-bottom: 30px;">Wedding Details</h2>
+            
+            <div class="name-list">
+                <div class="entourage-title">The Happy Couple</div>
+                <strong>Bride:</strong> Irine Paez<br>
+                <strong>Groom:</strong> El Vincent Estomago
+
+                <div class="entourage-title">Parents</div>
+                <strong>Parents of the Bride:</strong> Alejandro Buches & Raquel Abarcas<br>
+                <strong>Parents of the Groom:</strong> Didong Enopia & Elizabeth Verano Estomago
+
+                <div class="entourage-title">Primary Entourage</div>
+                <strong>Best Man:</strong> Noel Estomago<br>
+                <strong>Maid of Honor:</strong> Lovely Atas<br>
+                <strong>Groomsmen:</strong> Melquesedick Sayon, Ed Jacaban, Armando Mical, Sherwin Mical<br>
+                <strong>Bridesmaids:</strong> Aireen Ebrado, Kimberly Rodriguez, Dorienatz Hilaga, Dhana Cabillo
+
+                <div class="entourage-title">Bearers & Flower Girls</div>
+                <strong>Ring Bearer:</strong> John Benedict Abarcas<br>
+                <strong>Bible Bearer:</strong> Daniel Matthew Abellana<br>
+                <strong>Coin Bearer:</strong> Leonardo Paez<br>
+                <strong>Flower Girls:</strong> Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+
+                <div class="entourage-title">Principal Sponsors</div>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Then Freed Atas, Corazon Laluna, Jennifer Abarcas, Josefina Conchal
+
+                <div class="entourage-title">Major Sponsors</div>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Atas, Elizabeth Verano Estomago
+
+                <div class="entourage-title">Secondary Sponsors</div>
+                <strong>Candle:</strong> Daryl Consuegra & Arbi Misal<br>
+                <strong>Veil:</strong> Glen Paez<br>
+                <strong>Cord:</strong> Joselito Blanco & Sarah Sayon
+            </div>
+        </div>
     </div>
 
     <script>
-        // Countdown Logic (Moving/Live)
+        // Modal Control
+        function openModal() { document.getElementById("detailsModal").style.display = "block"; }
+        function closeModal() { document.getElementById("detailsModal").style.display = "none"; }
+
+        // Countdown Timer
         const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
-
-        const timer = setInterval(function() {
+        setInterval(() => {
             const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = d < 10 ? "0"+d : d;
-            document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
-            document.getElementById("mins").innerText = m < 10 ? "0"+m : m;
-            document.getElementById("secs").innerText = s < 10 ? "0"+s : s;
-
-            if (distance < 0) {
-                clearInterval(timer);
-                document.querySelector(".countdown-container").innerHTML = "JUST MARRIED!";
-            }
+            const diff = weddingDate - now;
+            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("mins").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+            document.getElementById("secs").innerText = Math.floor((diff % (1000*60)) / 1000);
         }, 1000);
 
-        // Slideshow Logic
-        let slideIdx = 0;
-        function playSlides() {
-            let slides = document.getElementsByClassName("mySlides");
-            let visibleSlides = [];
-            
-            for(let i=0; i < slides.length; i++) {
-                if(slides[i].style.display !== 'none') visibleSlides.push(slides[i]);
-                slides[i].style.display = "none";
-            }
-            
-            if(visibleSlides.length > 1) {
-                slideIdx++;
-                if (slideIdx > visibleSlides.length) {slideIdx = 1}
-                visibleSlides[slideIdx-1].style.display = "block";
-                setTimeout(playSlides, 3500);
-            } else {
-                slides[slides.length-1].style.display = "block";
+        // Slideshow
+        let slideIndex = 0;
+        function showSlides() {
+            let slides = document.querySelectorAll(".mySlides");
+            if(slides.length > 1) {
+                slides.forEach(s => s.style.display = "none");
+                slideIndex++;
+                if (slideIndex > slides.length) slideIndex = 1;
+                slides[slideIndex-1].style.display = "block";
+                setTimeout(showSlides, 3500);
             }
         }
-        playSlides();
+        showSlides();
     </script>
 </body>
 </html>
