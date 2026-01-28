@@ -3,191 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Vincent & Irine | Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Montserrat:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Wedding of El Vincent & Irine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
-            --beige: #f5f5dc;
-            --dark-beige: #e5e5c7;
-            --accent: #8d775f;
-            --text: #4a4a4a;
+            --moose-green: #3e4c3e; /* Professional Deep Moose Green */
+            --sage-accent: #8a9a8a;
+            --cream: #fcfaf5;
+            --gold-soft: #c5a059;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--beige);
-            color: var(--text);
+            background-color: var(--cream);
+            color: var(--moose-green);
             margin: 0;
             padding: 0;
-            line-height: 1.6;
         }
 
+        /* Hero Section */
         .hero {
-            padding: 60px 20px;
+            padding: 80px 20px 40px;
             text-align: center;
-            background: linear-gradient(to bottom, #fffdfa, var(--beige));
         }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--accent); margin: 10px 0; }
-        .cursive { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--accent); margin: 0; }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.8rem; letter-spacing: 2px; margin: 5px 0; color: var(--moose-green); }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold-soft); margin: 10px 0; }
+        
+        /* Professional Photo Border */
+        .photo-frame {
+            max-width: 85%; /* Keeps it from hitting screen edges */
+            margin: 0 auto 30px;
+            padding: 15px; /* The "Border" thickness */
+            background: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
 
-        /* Beautiful Slideshow Wrapper */
-        .slider-wrapper {
-            max-width: 500px;
-            margin: 20px auto;
+        .slider-container {
             position: relative;
-            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             aspect-ratio: 4/5;
-            background: #eee;
+            background: #f0f0f0;
         }
 
         .mySlides { display: none; width: 100%; height: 100%; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Countdown Timer */
-        #countdown {
+        /* Countdown Style */
+        .countdown-wrap {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
+            gap: 10px;
+            margin-bottom: 40px;
         }
-        .time-unit {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 60px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .time-unit span { display: block; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
-
-        /* Info Sections */
-        .card {
-            background: white;
-            margin: 20px;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .btn-map {
-            display: inline-block;
-            background: var(--accent);
+        .time-box {
+            background: var(--moose-green);
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 25px;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            padding: 15px;
+            border-radius: 5px;
+            min-width: 50px;
+        }
+        .time-box span { display: block; font-size: 1.2rem; font-weight: bold; }
+        .time-box label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Content Cards */
+        .section-card {
+            background: white;
+            margin: 0 20px 30px;
+            padding: 40px 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(62, 76, 62, 0.1);
         }
 
-        /* RSVP Form */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            border-bottom: 1px solid var(--gold-soft);
+            display: inline-block;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+
+        /* Form Styling */
         input, select {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid var(--dark-beige);
-            border-radius: 10px;
-            box-sizing: border-box;
-            background: #fffcf8;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        .submit-btn {
-            background: var(--accent);
+        .btn-submit {
+            background-color: var(--moose-green);
             color: white;
             border: none;
+            padding: 18px;
             width: 100%;
-            padding: 15px;
-            border-radius: 10px;
+            border-radius: 5px;
             font-weight: bold;
-            margin-top: 10px;
+            letter-spacing: 2px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        footer { padding: 40px; font-size: 0.8rem; opacity: 0.7; }
+        .btn-submit:hover { background-color: #2d382d; }
+
+        footer { padding: 50px; font-size: 0.7rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
     <div class="hero">
-        <p style="letter-spacing: 4px;">SAVE THE DATE</p>
+        <p style="letter-spacing: 5px; font-size: 0.8rem;">THE WEDDING OF</p>
         <h1>El Vincent Estomago</h1>
         <p class="cursive">and</p>
         <h1>Irine Paez</h1>
-        <p>DECEMBER 12, 2026</p>
     </div>
 
-    <div class="slider-wrapper">
-        <div class="mySlides"> <img src="wed1.png" onerror="this.parentElement.remove();"> </div>
-        <div class="mySlides"> <img src="wed2.png" onerror="this.parentElement.remove();"> </div>
-        <div class="mySlides"> <img src="wed3.png" onerror="this.parentElement.remove();"> </div>
-        <div class="mySlides"> <img src="wed4.png" onerror="this.parentElement.remove();"> </div>
-        <div class="mySlides"> <img src="wed5.png" onerror="this.parentElement.remove();"> </div>
-        <div class="mySlides" id="fallback" style="display:block;">
-            <img src="wed1.png" alt="Wedding Couple">
+    <div class="photo-frame">
+        <div class="slider-container">
+            <div class="mySlides"> <img src="wed1.png" onerror="this.remove();"> </div>
+            <div class="mySlides"> <img src="wed2.png" onerror="this.remove();"> </div>
+            <div class="mySlides"> <img src="wed3.png" onerror="this.remove();"> </div>
+            <div class="mySlides"> <img src="wed4.png" onerror="this.remove();"> </div>
+            <div class="mySlides"> <img src="wed5.png" onerror="this.remove();"> </div>
+            <div class="mySlides" id="fallback" style="display:block;">
+                <img src="wed1.png" alt="Wedding Couple">
+            </div>
         </div>
     </div>
 
-    <div id="countdown">
-        <div class="time-unit"><span id="days">00</span>days</div>
-        <div class="time-unit"><span id="hours">00</span>hrs</div>
-        <div class="time-unit"><span id="mins">00</span>mins</div>
+    <div class="countdown-wrap">
+        <div class="time-box"><span id="days">00</span><label>Days</label></div>
+        <div class="time-box"><span id="hours">00</span><label>Hrs</label></div>
+        <div class="time-box"><span id="mins">00</span><label>Mins</label></div>
     </div>
 
-    <div class="card">
-        <h3 style="font-family: 'Cinzel';">Ceremony & Venue</h3>
+    <div class="section-card">
+        <h3 class="section-title">The Location</h3>
         <p><strong>Chapel of San Pedro Calungsod</strong><br>
-        SM Seaside Complex, South Road Properties,<br>
-        Cebu City, Philippines</p>
-        <a href="https://maps.app.goo.gl/Zc9XvG5EaWun2v7y7" target="_blank" class="btn-map">Open in Google Maps</a>
+        SM Seaside Complex, SRP, Cebu City</p>
+        <p style="font-size: 0.9rem; font-style: italic;">Reception to follow at The Glass House</p>
+        <a href="https://maps.google.com" target="_blank" style="color: var(--moose-green); text-decoration: underline; font-size: 0.8rem;">GET DIRECTIONS</a>
     </div>
 
-    <div class="card">
-        <h3 style="font-family: 'Cinzel';">Join Our Celebration</h3>
+    <div class="section-card">
+        <h3 class="section-title">RSVP Station</h3>
+        <p>Please respond by November 1, 2026</p>
         <form>
-            <input type="text" placeholder="Your Full Name" required>
+            <input type="text" placeholder="Full Name" required>
             <select required>
-                <option value="">Will you be attending?</option>
-                <option value="yes">Gladly Accept</option>
-                <option value="no">Regretfully Decline</option>
+                <option value="">Attending?</option>
+                <option value="yes">Accepts with Pleasure</option>
+                <option value="no">Declines with Regret</option>
             </select>
-            <input type="number" placeholder="Number of Guests" min="1" max="5">
-            <button type="submit" class="submit-btn">SEND RSVP</button>
+            <input type="number" placeholder="Number of Guests" min="1">
+            <button type="submit" class="btn-submit">SUBMIT ATTENDANCE</button>
         </form>
     </div>
 
     <footer>
-        #ElVincentAndIrine2026
+        EL VINCENT & IRINE | 12.12.2026
     </footer>
 
     <script>
-        // Automatic Slideshow with "Only wed1" logic
+        // Professional Slideshow Logic
         let slideIndex = 0;
         function showSlides() {
             let slides = document.querySelectorAll(".mySlides");
-            
-            // If more than just the fallback exists, cycle them
             if (slides.length > 1) {
-                for (let i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";  
-                }
+                for (let i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
                 slideIndex++;
                 if (slideIndex > slides.length) {slideIndex = 1}    
                 slides[slideIndex-1].style.display = "block";
-                setTimeout(showSlides, 3000); 
+                setTimeout(showSlides, 4000); 
             } else {
-                // If only 1 image exists, just keep it visible
                 slides[0].style.display = "block";
             }
         }
         showSlides();
 
-        // Simple Countdown Logic
-        const targetDate = new Date("Dec 12, 2026 15:00:00").getTime();
+        // Countdown Timer Logic
+        const target = new Date("Dec 12, 2026 15:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
-            const diff = targetDate - now;
+            const diff = target - now;
             document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
             document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
