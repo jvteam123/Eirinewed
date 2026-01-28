@@ -3,144 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding of El Vincent & Irine</title>
+    <title>El Vincent & Irine | Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Montserrat:wght@300;400&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #b39a6a;
-            --dark-text: #4a4a4a;
-            --bg-color: #fdfbf7;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--dark-text);
-            margin: 0;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 40px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        
-        /* Slideshow Styling */
-        .slideshow-container {
-            max-width: 100%;
-            position: relative;
-            margin: 20px auto;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        .mySlides {
-            display: none;
-        }
-        .mySlides img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
+            --beige: #f5f5dc;
+            --dark-beige: #e5e5c7;
+            --accent: #8d775f;
+            --text: #4a4a4a;
         }
 
-        /* Form Styling */
-        .rsvp-section {
-            background: #f4f1ea;
-            padding: 30px;
-            margin-top: 40px;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--beige);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .hero {
+            padding: 60px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #fffdfa, var(--beige));
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--accent); margin: 10px 0; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--accent); margin: 0; }
+
+        /* Beautiful Slideshow Wrapper */
+        .slider-wrapper {
+            max-width: 500px;
+            margin: 20px auto;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            aspect-ratio: 4/5;
+            background: #eee;
+        }
+
+        .mySlides { display: none; width: 100%; height: 100%; }
+        .mySlides img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Countdown Timer */
+        #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .time-unit {
+            background: white;
+            padding: 10px;
             border-radius: 8px;
+            min-width: 60px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        input, select, button {
-            width: 90%;
+        .time-unit span { display: block; font-weight: bold; font-size: 1.2rem; color: var(--accent); }
+
+        /* Info Sections */
+        .card {
+            background: white;
+            margin: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .btn-map {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* RSVP Form */
+        input, select {
+            width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            margin: 8px 0;
+            border: 1px solid var(--dark-beige);
+            border-radius: 10px;
+            box-sizing: border-box;
+            background: #fffcf8;
         }
-        button {
-            background-color: var(--gold);
+
+        .submit-btn {
+            background: var(--accent);
             color: white;
             border: none;
-            cursor: pointer;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
             font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
         }
 
-        /* Map Placeholder */
-        .map-container {
-            margin: 30px 0;
-            background: #eee;
-            padding: 20px;
-        }
+        footer { padding: 40px; font-size: 0.8rem; opacity: 0.7; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <p style="letter-spacing: 3px;">CELEBRATING THE LOVE OF</p>
-    <h1 style="font-size: 2.5em; margin: 0;">El Vincent Estomago</h1>
-    <h2 style="font-family: serif; font-style: italic;">&</h2>
-    <h1 style="font-size: 2.5em; margin: 0;">Irine Paez</h1>
+    <div class="hero">
+        <p style="letter-spacing: 4px;">SAVE THE DATE</p>
+        <h1>El Vincent Estomago</h1>
+        <p class="cursive">and</p>
+        <h1>Irine Paez</h1>
+        <p>DECEMBER 12, 2026</p>
+    </div>
 
-    <div class="slideshow-container">
-        <div class="mySlides fade">
-            <img src="wed1.png" alt="Wedding Photo 1">
-        </div>
-        <div class="mySlides fade">
-            <img src="wed2.png" alt="Wedding Photo 2">
-        </div>
-        <div class="mySlides fade">
-            <img src="wed3.png" alt="Wedding Photo 3">
-        </div>
-        <div class="mySlides fade">
-            <img src="wed4.png" alt="Wedding Photo 4">
-        </div>
-        <div class="mySlides fade">
-            <img src="wed5.png" alt="Wedding Photo 5">
+    <div class="slider-wrapper">
+        <div class="mySlides"> <img src="wed1.png" onerror="this.parentElement.remove();"> </div>
+        <div class="mySlides"> <img src="wed2.png" onerror="this.parentElement.remove();"> </div>
+        <div class="mySlides"> <img src="wed3.png" onerror="this.parentElement.remove();"> </div>
+        <div class="mySlides"> <img src="wed4.png" onerror="this.parentElement.remove();"> </div>
+        <div class="mySlides"> <img src="wed5.png" onerror="this.parentElement.remove();"> </div>
+        <div class="mySlides" id="fallback" style="display:block;">
+            <img src="wed1.png" alt="Wedding Couple">
         </div>
     </div>
 
-    <div class="location-info">
-        <h3>WHERE & WHEN</h3>
-        <p><strong>Ceremony:</strong> St. Augustine Church | 3:00 PM</p>
-        <p><strong>Reception:</strong> The Grand Hall | 5:30 PM</p>
-        
-        <div class="map-container">
-            <strong>Location Map</strong><br>
-            <p>[Insert Google Maps Link or Image Here]</p>
-        </div>
+    <div id="countdown">
+        <div class="time-unit"><span id="days">00</span>days</div>
+        <div class="time-unit"><span id="hours">00</span>hrs</div>
+        <div class="time-unit"><span id="mins">00</span>mins</div>
     </div>
 
-    <div class="rsvp-section">
-        <h3>RSVP / FILL STATION</h3>
-        <p>Kindly let us know if you can make it!</p>
-        <form action="#">
-            <input type="text" name="guest_name" placeholder="Your Full Name" required>
-            <select name="attending" required>
-                <option value="">Will you attend?</option>
-                <option value="yes">Yes, I'll be there!</option>
-                <option value="no">Sorry, I can't make it</option>
+    <div class="card">
+        <h3 style="font-family: 'Cinzel';">Ceremony & Venue</h3>
+        <p><strong>Chapel of San Pedro Calungsod</strong><br>
+        SM Seaside Complex, South Road Properties,<br>
+        Cebu City, Philippines</p>
+        <a href="https://maps.app.goo.gl/Zc9XvG5EaWun2v7y7" target="_blank" class="btn-map">Open in Google Maps</a>
+    </div>
+
+    <div class="card">
+        <h3 style="font-family: 'Cinzel';">Join Our Celebration</h3>
+        <form>
+            <input type="text" placeholder="Your Full Name" required>
+            <select required>
+                <option value="">Will you be attending?</option>
+                <option value="yes">Gladly Accept</option>
+                <option value="no">Regretfully Decline</option>
             </select>
-            <input type="number" name="plus_one" placeholder="Number of Guests" min="1" max="5">
-            <button type="submit">SUBMIT ATTENDANCE</button>
+            <input type="number" placeholder="Number of Guests" min="1" max="5">
+            <button type="submit" class="submit-btn">SEND RSVP</button>
         </form>
     </div>
-</div>
 
-<script>
-    // Simple Slideshow Logic
-    let slideIndex = 0;
-    showSlides();
+    <footer>
+        #ElVincentAndIrine2026
+    </footer>
 
-    function showSlides() {
-        let slides = document.getElementsByClassName("mySlides");
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";  
+    <script>
+        // Automatic Slideshow with "Only wed1" logic
+        let slideIndex = 0;
+        function showSlides() {
+            let slides = document.querySelectorAll(".mySlides");
+            
+            // If more than just the fallback exists, cycle them
+            if (slides.length > 1) {
+                for (let i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";  
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) {slideIndex = 1}    
+                slides[slideIndex-1].style.display = "block";
+                setTimeout(showSlides, 3000); 
+            } else {
+                // If only 1 image exists, just keep it visible
+                slides[0].style.display = "block";
+            }
         }
-        slideIndex++;
-        if (slideIndex > slides.length) {slideIndex = 1}    
-        slides[slideIndex-1].style.display = "block";  
-        setTimeout(showSlides, 3000); // Change image every 3 seconds
-    }
-</script>
+        showSlides();
 
+        // Simple Countdown Logic
+        const targetDate = new Date("Dec 12, 2026 15:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+    </script>
 </body>
 </html>
