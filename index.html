@@ -9,9 +9,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
         :root { --moose-green: #2e3b2e; --gold: #d4af37; --cream: #fdfaf5; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--moose-green); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        /* Welcome Invitation Overlay */
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            overflow-x: hidden;
+            min-height: 100vh;
+            color: var(--moose-green);
+            
+            /* Background Image Setup */
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        
         #welcomeOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--moose-green); color: var(--gold);
@@ -20,16 +37,44 @@
         }
         #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Fixed Gold Border */
-        .site-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; border: 12px solid var(--cream); outline: 2px solid var(--gold); outline-offset: -10px; pointer-events: none; z-index: 2000; }
+        /* Transparent Site Frame */
+        .site-frame { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            border: 12px solid transparent; 
+            outline: 2px solid var(--gold); 
+            outline-offset: -10px; 
+            pointer-events: none; 
+            z-index: 2000; 
+        }
         
-        .container { max-width: 500px; width: 85%; padding: 60px 20px; text-align: center; }
+        .container { 
+            max-width: 500px; 
+            width: 85%; 
+            padding: 60px 20px; 
+            text-align: center; 
+            /* Glass effect to show bg.jpg */
+            background-color: rgba(253, 250, 245, 0.15); 
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            position: relative;
+            z-index: 10;
+        }
+
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
         .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
         
         .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
         
-        .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .photo-frame { 
+            background: rgba(255, 255, 255, 0.2); 
+            padding: 10px; 
+            margin: 20px auto; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            border: 1px solid rgba(255,255,255,0.3); 
+        }
+        
         .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
         .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
         .mySlides img { width: 100%; height: 100%; object-fit: cover; }
@@ -46,8 +91,23 @@
         .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; }
+        .rsvp-box { 
+            background: rgba(255, 255, 255, 0.15); 
+            padding: 25px; 
+            margin-top: 30px; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            border-top: 3px solid var(--gold); 
+        }
+        
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            background: rgba(255, 255, 255, 0.85);
+            font-family: 'Montserrat'; 
+            box-sizing: border-box; 
+        }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; overflow-y: auto; }
         .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
@@ -62,7 +122,6 @@
         
         .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 4000; background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
 
-        /* Responsive Fix for small screens */
         @media (max-width: 350px) {
             .unit span { font-size: 0.9rem; }
             .unit label { font-size: 0.4rem; }
@@ -116,7 +175,7 @@
         
         <div class="rsvp-box">
             <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
-            <p id="limitMsg" style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">Max 3 responses per device</p>
+            <p id="limitMsg" style="font-size: 0.7rem; color: #555; margin-bottom: 10px;">Max 3 responses per device</p>
             <input type="text" id="guestName" placeholder="Your Full Name">
             <select id="isAttending">
                 <option value="Yes">Yes, I'm attending</option>
@@ -156,10 +215,8 @@
 
             <div class="detail-row">
                 <div class="section-header">Parents</div>
-                <span class="role-title">Of the Bride</span>
-                Alejandro Briones & Raquel Abarcas
-                <span class="role-title">Of the Groom</span>
-                Didong Enopia & Elizabeth Estomago Verano 
+                <span class="role-title">Of the Bride</span> Alejandro Briones & Raquel Abarcas
+                <span class="role-title">Of the Groom</span> Didong Enopia & Elizabeth Estomago Verano
             </div>
 
             <div class="detail-row">
@@ -170,10 +227,8 @@
 
             <div class="detail-row">
                 <div class="section-header">Groomsmen & Bridesmaids</div>
-                <span class="role-title">Groomsmen</span>
-                Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
-                <span class="role-title">Bridesmaids</span>
-                Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
+                <span class="role-title">Groomsmen</span> Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
+                <span class="role-title">Bridesmaids</span> Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
             </div>
 
             <div class="detail-row">
@@ -181,16 +236,15 @@
                 <span class="role-title">Ring Bearer</span> John Benedict Abarcas
                 <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
                 <span class="role-title">Coin Bearer</span> Leonardo Paez
-                <span class="role-title">Flower Girls</span>
-                Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+                <span class="role-title">Flower Girls</span> Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
             </div>
 
             <div class="detail-row">
-                <div class="section-header">Major Sponsors</div>
+                <div class="section-header">Sponsors</div>
                 <span class="role-title">Principal Sponsors</span>
                 Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
                 <span class="role-title">Major Sponsors</span>
-                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Estomago Verano 
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Estomago Verano, Gabriel Tamashiro
             </div>
 
             <div class="detail-row">
@@ -211,7 +265,6 @@
     </div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
             authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
@@ -228,28 +281,15 @@
 
         function enterSite() {
             document.getElementById('welcomeOverlay').classList.add('fade-out');
-            music.play().then(() => {
-                musicBtn.innerText = "♪";
-            }).catch(e => {
-                console.log("Audio autoplay was blocked.");
-                musicBtn.innerText = "🔇";
-            });
-            setTimeout(() => {
-                document.getElementById('welcomeOverlay').style.display = 'none';
-            }, 1500);
+            music.play().then(() => { musicBtn.innerText = "🎵"; }).catch(e => { musicBtn.innerText = "🔇"; });
+            setTimeout(() => { document.getElementById('welcomeOverlay').style.display = 'none'; }, 1500);
         }
 
         function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                musicBtn.innerText = "♪";
-            } else {
-                music.pause();
-                musicBtn.innerText = "🔇";
-            }
+            if (music.paused) { music.play(); musicBtn.innerText = "🎵"; } 
+            else { music.pause(); musicBtn.innerText = "🔇"; }
         }
 
-        // RSVP Submission
         document.getElementById('submitRsvp').onclick = async () => {
             const name = document.getElementById('guestName').value.trim();
             const status = document.getElementById('isAttending').value;
@@ -258,31 +298,18 @@
             const txt = document.getElementById('btnText');
 
             let rsvpCount = parseInt(localStorage.getItem('rsvp_count') || "0");
-            if (rsvpCount >= 3) return alert("Device limit reached (Max 3).");
-
+            if (rsvpCount >= 3) return alert("Device limit reached.");
             if(!name) return alert("Please enter your name");
             
-            btn.disabled = true; 
-            loader.style.display = "block"; 
-            txt.innerText = "SENDING...";
-            
+            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
             try {
-                await db.collection("weddingGuests").add({ 
-                    name, 
-                    status, 
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                });
+                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 localStorage.setItem('rsvp_count', rsvpCount + 1);
                 alert("RSVP Successful!");
                 document.getElementById('guestName').value = "";
                 if (rsvpCount + 1 >= 3) btn.style.display = 'none';
-            } catch (e) { 
-                alert("Submission failed. Check your connection."); 
-            } finally { 
-                btn.disabled = false; 
-                loader.style.display = "none"; 
-                txt.innerText = "SUBMIT RSVP"; 
-            }
+            } catch (e) { alert("Submission failed."); } 
+            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
         };
 
         function openModal(id) { 
@@ -290,37 +317,22 @@
             if(id==='guestModal') loadGuests(); 
         }
 
-        function closeModal(id) { 
-            document.getElementById(id).style.display = "none"; 
-        }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
         
         async function loadGuests() {
             const list = document.getElementById('attendingList');
-            list.innerHTML = "<li style='text-align:center;'>Loading guest list...</li>";
+            list.innerHTML = "<li>Loading...</li>";
             try {
-                const snap = await db.collection("weddingGuests")
-                                     .orderBy("timestamp", "desc")
-                                     .get();
-                
+                const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
                 list.innerHTML = "";
-                let count = 0;
-                
                 snap.forEach(doc => { 
                     if(doc.data().status === "Yes") {
-                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; 
-                        count++;
+                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">✨ ${doc.data().name}</li>`; 
                     }
                 });
-
-                if (count === 0) {
-                    list.innerHTML = "<li style='text-align:center; color:#888;'>No confirmed guests yet.</li>";
-                }
-            } catch (e) {
-                list.innerHTML = "<li style='text-align:center; color:red;'>Could not load list.</li>";
-            }
+            } catch (e) { list.innerHTML = "<li>Error loading list.</li>"; }
         }
 
-        // Improved Image Slider
         let sIdx = 0;
         function play() {
             const s = document.querySelectorAll(".mySlides");
@@ -333,7 +345,6 @@
         }
         play();
 
-        // Countdown Timer
         const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
         setInterval(() => {
             const diff = weddingDate - new Date().getTime();
@@ -343,12 +354,6 @@
             document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
             document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
         }, 1000);
-
-        window.onload = () => {
-            if (parseInt(localStorage.getItem('rsvp_count') || "0") >= 3) {
-                document.getElementById('submitRsvp').style.display = 'none';
-            }
-        };
     </script>
 </body>
 </html>
