@@ -60,8 +60,14 @@
         .color-palette { display: flex; gap: 12px; margin: 10px 0; }
         .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         
-        /* Music Control Button */
         .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 4000; background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+        /* Responsive Fix for small screens */
+        @media (max-width: 350px) {
+            .unit span { font-size: 0.9rem; }
+            .unit label { font-size: 0.4rem; }
+            .cursive { font-size: 2.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -77,7 +83,7 @@
         <button class="btn" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="enterSite()">Open Invitation</button>
     </div>
 
-    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">♪</button>
+    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🔇</button>
 
     <div class="site-frame"></div>
 
@@ -94,8 +100,8 @@
 
         <div class="photo-frame">
             <div class="slider">
-                <div class="mySlides" style="display:block;"><img src="wed1.png" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
-                <div class="mySlides"><img src="wed2.png" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
+                <div class="mySlides" style="display:block;"><img src="wed1.png" alt="Couple Photo 1" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
+                <div class="mySlides"><img src="wed2.png" alt="Couple Photo 2" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
             </div>
         </div>
 
@@ -205,7 +211,7 @@
     </div>
 
     <script>
-        // Firebase Config
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
             authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
@@ -218,11 +224,16 @@
         const db = firebase.firestore();
 
         const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
 
-        // Welcome Transition + Play Music
         function enterSite() {
             document.getElementById('welcomeOverlay').classList.add('fade-out');
-            music.play().catch(e => console.log("Audio play blocked until interaction"));
+            music.play().then(() => {
+                musicBtn.innerText = "♪";
+            }).catch(e => {
+                console.log("Audio autoplay was blocked.");
+                musicBtn.innerText = "🔇";
+            });
             setTimeout(() => {
                 document.getElementById('welcomeOverlay').style.display = 'none';
             }, 1500);
@@ -231,16 +242,16 @@
         function toggleMusic() {
             if (music.paused) {
                 music.play();
-                document.getElementById('musicBtn').innerText = "♪";
+                musicBtn.innerText = "♪";
             } else {
                 music.pause();
-                document.getElementById('musicBtn').innerText = "mute";
+                musicBtn.innerText = "🔇";
             }
         }
 
-        // RSVP Logic
+        // RSVP Submission
         document.getElementById('submitRsvp').onclick = async () => {
-            const name = document.getElementById('guestName').value;
+            const name = document.getElementById('guestName').value.trim();
             const status = document.getElementById('isAttending').value;
             const btn = document.getElementById('submitRsvp');
             const loader = document.getElementById('loader');
@@ -250,37 +261,73 @@
             if (rsvpCount >= 3) return alert("Device limit reached (Max 3).");
 
             if(!name) return alert("Please enter your name");
-            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
+            
+            btn.disabled = true; 
+            loader.style.display = "block"; 
+            txt.innerText = "SENDING...";
             
             try {
-                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                await db.collection("weddingGuests").add({ 
+                    name, 
+                    status, 
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                });
                 localStorage.setItem('rsvp_count', rsvpCount + 1);
                 alert("RSVP Successful!");
                 document.getElementById('guestName').value = "";
                 if (rsvpCount + 1 >= 3) btn.style.display = 'none';
-            } catch (e) { alert("Error: " + e.message); } 
-            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
+            } catch (e) { 
+                alert("Submission failed. Check your connection."); 
+            } finally { 
+                btn.disabled = false; 
+                loader.style.display = "none"; 
+                txt.innerText = "SUBMIT RSVP"; 
+            }
         };
 
-        function openModal(id) { document.getElementById(id).style.display = "block"; if(id==='guestModal') loadGuests(); }
-        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        function openModal(id) { 
+            document.getElementById(id).style.display = "block"; 
+            if(id==='guestModal') loadGuests(); 
+        }
+
+        function closeModal(id) { 
+            document.getElementById(id).style.display = "none"; 
+        }
         
         async function loadGuests() {
             const list = document.getElementById('attendingList');
-            list.innerHTML = "Loading...";
-            const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
-            list.innerHTML = "";
-            snap.forEach(doc => { if(doc.data().status === "Yes") list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; });
+            list.innerHTML = "<li style='text-align:center;'>Loading guest list...</li>";
+            try {
+                const snap = await db.collection("weddingGuests")
+                                     .orderBy("timestamp", "desc")
+                                     .get();
+                
+                list.innerHTML = "";
+                let count = 0;
+                
+                snap.forEach(doc => { 
+                    if(doc.data().status === "Yes") {
+                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; 
+                        count++;
+                    }
+                });
+
+                if (count === 0) {
+                    list.innerHTML = "<li style='text-align:center; color:#888;'>No confirmed guests yet.</li>";
+                }
+            } catch (e) {
+                list.innerHTML = "<li style='text-align:center; color:red;'>Could not load list.</li>";
+            }
         }
 
-        // Image Slider
+        // Improved Image Slider
         let sIdx = 0;
         function play() {
-            let s = document.querySelectorAll(".mySlides");
+            const s = document.querySelectorAll(".mySlides");
             if(s.length > 0) {
                 s.forEach(x => x.style.display = "none");
-                sIdx = (sIdx + 1) % s.length; 
                 s[sIdx].style.display = "block";
+                sIdx = (sIdx + 1) % s.length; 
             }
             setTimeout(play, 3500);
         }
@@ -298,7 +345,9 @@
         }, 1000);
 
         window.onload = () => {
-            if (parseInt(localStorage.getItem('rsvp_count') || "0") >= 3) document.getElementById('submitRsvp').style.display = 'none';
+            if (parseInt(localStorage.getItem('rsvp_count') || "0") >= 3) {
+                document.getElementById('submitRsvp').style.display = 'none';
+            }
         };
     </script>
 </body>
