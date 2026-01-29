@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding of El Vincent & Irine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root { 
+            --moose-green: #1a2e1a; /* Deeper Jewel Tone Green */
+            --gold: #c5a028; /* Polished Gold */
+            --cream: #fffaf0; /* Warm Floral White */
+            --text-main: #2e3b2e;
+        }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--text-main); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        
+        /* Welcome Invitation Overlay */
+        #welcomeOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--moose-green); color: var(--gold);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 5000; transition: opacity 1.2s ease-in-out; text-align: center;
+        }
+        #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
+
+        /* Fixed Border */
+        .site-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; border: 12px solid var(--cream); outline: 2px solid var(--gold); outline-offset: -10px; pointer-events: none; z-index: 2000; }
+        
+        .container { max-width: 500px; width: 85%; padding: 60px 20px; text-align: center; }
+        h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
+        .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
+        
+        .main-info { font-size: 0.95rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
+        
+        .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
+        .mySlides { display: none; width: 100%; height: 100%; animation: fade 1.5s; }
+        .mySlides img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes fade { from {opacity: .7} to {opacity: 1} }
+
+        .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
+        .unit { background: var(--moose-green); color: var(--gold); padding: 10px 5px; border-radius: 4px; border: 1px solid var(--gold); }
+        .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
+        .unit label { font-size: 0.5rem; color: white; text-transform: uppercase; }
+
+        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; transition: 0.3s; }
+        .btn:hover { background: #253d25; }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        
+        .map-btn { background: #fff; color: var(--moose-green); border: 1px solid var(--moose-green); margin-top: 5px; font-size: 0.8rem; }
+
+        .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; border-radius: 4px; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; overflow-y: auto; }
+        .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
+        .close { position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
+        
+        .section-header { font-family: 'Cinzel'; color: var(--gold); border-bottom: 1px solid var(--gold); margin: 20px 0 10px; font-size: 0.9rem; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; }
+        .detail-row { font-size: 0.85rem; line-height: 1.8; margin-bottom: 15px; }
+        .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 5px; }
+
+        .color-palette { display: flex; gap: 12px; margin: 10px 0; }
+        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+        
+        .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 4000; background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+        @media (max-width: 350px) {
+            .unit span { font-size: 0.9rem; }
+            .cursive { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop aria-hidden="true">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="welcomeOverlay" role="dialog" aria-labelledby="welcomeTitle">
+        <p style="letter-spacing: 5px; font-size: 0.8rem;">THE WEDDING OF</p>
+        <p id="welcomeTitle" class="cursive" style="font-size: 4rem;">El Vincent & Irine</p>
+        <p style="font-family: 'Cinzel'; font-size: 1.2rem; margin-top: 20px;">03 . 07 . 2026</p>
+        <button class="btn" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="enterSite()" aria-label="Open wedding invitation">Open Invitation</button>
+    </div>
+
+    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn" aria-label="Toggle background music">🔇</button>
+
+    <div class="site-frame"></div>
+
+    <div class="container">
+        <p style="letter-spacing: 4px; font-size: 0.75rem;">YOU ARE INVITED TO THE WEDDING OF</p>
+        <p class="cursive">El Vincent & Irine</p>
+        <h1>MARCH 7, 2026</h1>
+        
+        <div class="main-info">
+            <strong>01:30 PM</strong><br>
+            Sto. Thomas de Villanueva Parish<br>
+            Pardo, Cebu City
+        </div>
+
+        <div class="photo-frame">
+            <div class="slider">
+                <div class="mySlides" style="display:block;"><img src="wed1.png" alt="Vincent and Irine Portrait" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
+                <div class="mySlides"><img src="wed2.png" alt="El Vincent and Irine Smiling" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
+            </div>
+        </div>
+
+        <div class="timer" aria-label="Countdown to wedding day">
+            <div class="unit"><span id="days">00</span><label>Days</label></div>
+            <div class="unit"><span id="hours">00</span><label>Hrs</label></div>
+            <div class="unit"><span id="mins">00</span><label>Mins</label></div>
+            <div class="unit"><span id="secs">00</span><label>Secs</label></div>
+        </div>
+
+        <button class="btn" onclick="openModal('detailsModal')">View Wedding Details</button>
+        
+        <div class="rsvp-box">
+            <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
+            <p id="limitMsg" style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">Max 3 responses per device</p>
+            <input type="text" id="guestName" placeholder="Your Full Name" aria-label="Your Full Name">
+            <select id="isAttending" aria-label="Attending Status">
+                <option value="Yes">Yes, I'm attending</option>
+                <option value="No">No, I can't make it</option>
+            </select>
+            <button class="btn" id="submitRsvp">
+                <span id="btnText">SUBMIT RSVP</span>
+                <div class="loader" id="loader"></div>
+            </button>
+            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--text-main); font-size:0.7rem; text-decoration:underline; font-family:'Montserrat';">Who's attending?</button>
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('detailsModal')" aria-label="Close modal">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Details</h2>
+            
+            <div class="detail-row">
+                <div class="section-header">Venues</div>
+                <span class="role-title">Ceremony & Reception</span>
+                Sto. Thomas de Villanueva Parish, Pardo, Cebu City
+                <a href="https://maps.app.goo.gl/YyU9WjS7Xp7XyS8M8" target="_blank" style="text-decoration:none;">
+                    <button class="btn map-btn" aria-label="Open location in Google Maps">📍 View Location on Map</button>
+                </a>
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Dress Code: Moose Green</div>
+                Semi-Formal Earth Tones
+                <div class="color-palette">
+                    <div class="swatch" style="background-color: #1a2e1a;" title="Moose Green"></div>
+                    <div class="swatch" style="background-color: #4a5d4a;" title="Sage"></div>
+                    <div class="swatch" style="background-color: #c5a028;" title="Gold"></div>
+                    <div class="swatch" style="background-color: #fdfaf5;" title="Cream"></div>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Entourage</div>
+                <span class="role-title">Parents of the Bride</span> Alejandro Briones & Raquel Abarcas
+                <span class="role-title">Parents of the Groom</span> Didong Enopia & Elizabeth Verano 
+                <span class="role-title">Best Man & Maid of Honor</span> Noel Estomago & Lovely Aras
+            </div>
+            <p style="font-size: 0.7rem; text-align: center; color: #888;">Tap anywhere outside to close</p>
+        </div>
+    </div>
+
+    <div id="guestModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('guestModal')" aria-label="Close modal">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center;">Confirmed Guests</h2>
+            <ul id="attendingList" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
+            authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
+            projectId: "react-time-tracker-cdbd2",
+            storageBucket: "react-time-tracker-cdbd2.firebasestorage.app",
+            messagingSenderId: "1043791910954",
+            appId: "1:1043791910954:web:f56c707e26ab592c56cb53"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
+        function enterSite() {
+            document.getElementById('welcomeOverlay').classList.add('fade-out');
+            music.play().then(() => { musicBtn.innerText = "🎵"; }).catch(e => { musicBtn.innerText = "🔇"; });
+            setTimeout(() => { document.getElementById('welcomeOverlay').style.display = 'none'; }, 1500);
+        }
+
+        function toggleMusic() {
+            if (music.paused) { music.play(); musicBtn.innerText = "🎵"; } 
+            else { music.pause(); musicBtn.innerText = "🔇"; }
+        }
+
+        document.getElementById('submitRsvp').onclick = async () => {
+            const name = document.getElementById('guestName').value.trim();
+            const status = document.getElementById('isAttending').value;
+            const btn = document.getElementById('submitRsvp');
+            const loader = document.getElementById('loader');
+            const txt = document.getElementById('btnText');
+
+            let rsvpCount = parseInt(localStorage.getItem('rsvp_count') || "0");
+            if (rsvpCount >= 3) return alert("Device limit reached.");
+            if(!name) return alert("Please enter your name");
+            
+            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
+            
+            try {
+                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                localStorage.setItem('rsvp_count', rsvpCount + 1);
+                alert("RSVP Successful!");
+                document.getElementById('guestName').value = "";
+                if (rsvpCount + 1 >= 3) btn.style.display = 'none';
+            } catch (e) { alert("Submission failed."); } 
+            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
+        };
+
+        function openModal(id) { 
+            document.getElementById(id).style.display = "block"; 
+            if(id==='guestModal') loadGuests(); 
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') { event.target.style.display = "none"; }
+        }
+
+        async function loadGuests() {
+            const list = document.getElementById('attendingList');
+            list.innerHTML = "<li>Loading...</li>";
+            try {
+                const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
+                list.innerHTML = "";
+                snap.forEach(doc => { 
+                    if(doc.data().status === "Yes") {
+                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">✨ ${doc.data().name}</li>`; 
+                    }
+                });
+            } catch (e) { list.innerHTML = "<li>Error loading list.</li>"; }
+        }
+
+        let sIdx = 0;
+        const slides = document.querySelectorAll(".mySlides");
+        function play() {
+            if(slides.length > 0) {
+                slides.forEach(x => x.style.display = "none");
+                slides[sIdx].style.display = "block";
+                sIdx = (sIdx + 1) % slides.length; 
+            }
+            setTimeout(play, 3500);
+        }
+        play();
+
+        const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            if (diff < 0) { document.querySelector(".timer").innerHTML = "HAPPY WEDDING DAY!"; return; }
+            document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+        }, 1000);
+
+        window.onload = () => {
+            if (parseInt(localStorage.getItem('rsvp_count') || "0") >= 3) {
+                document.getElementById('submitRsvp').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
