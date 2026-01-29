@@ -8,31 +8,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
-        :root { 
-            --moose-green: #1a2e1a; /* Deeper Jewel Tone Green */
-            --gold: #c5a028; /* Polished Gold */
-            --cream: #fffaf0; /* Warm Floral White */
-            --text-main: #2e3b2e;
-        }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--text-main); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        :root { --moose-green: #2e3b2e; --gold: #d4af37; --cream: #fdfaf5; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--moose-green); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
         /* Welcome Invitation Overlay */
         #welcomeOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--moose-green); color: var(--gold);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 5000; transition: opacity 1.2s ease-in-out; text-align: center;
+            z-index: 5000; transition: opacity 1.5s ease-in-out; text-align: center;
         }
         #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Fixed Border */
+        /* Fixed Gold Border */
         .site-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; border: 12px solid var(--cream); outline: 2px solid var(--gold); outline-offset: -10px; pointer-events: none; z-index: 2000; }
         
         .container { max-width: 500px; width: 85%; padding: 60px 20px; text-align: center; }
         h1 { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 2px; margin: 5px 0; }
         .cursive { font-family: 'Great Vibes', cursive; font-size: 3.5rem; color: var(--gold); margin: 5px 0; }
         
-        .main-info { font-size: 0.95rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
+        .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
         
         .photo-frame { background: white; padding: 10px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eee; }
         .slider { aspect-ratio: 4/5; overflow: hidden; position: relative; background: #eee; }
@@ -45,19 +40,16 @@
         .unit span { display: block; font-size: 1.1rem; font-weight: bold; }
         .unit label { font-size: 0.5rem; color: white; text-transform: uppercase; }
 
-        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; transition: 0.3s; }
-        .btn:hover { background: #253d25; }
+        .btn { background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); padding: 14px; font-family: 'Cinzel'; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; position: relative; letter-spacing: 1px; }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
         
-        .map-btn { background: #fff; color: var(--moose-green); border: 1px solid var(--moose-green); margin-top: 5px; font-size: 0.8rem; }
-
         .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .rsvp-box { background: white; padding: 25px; margin-top: 30px; border: 1px solid #eee; border-top: 3px solid var(--gold); }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; border-radius: 4px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; font-family: 'Montserrat'; box-sizing: border-box; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; overflow-y: auto; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 3000; overflow-y: auto; }
         .modal-content { background: var(--cream); width: 85%; max-width: 450px; margin: 40px auto; padding: 35px; border-radius: 4px; position: relative; text-align: left; }
         .close { position: absolute; top: 10px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--moose-green); }
         
@@ -66,30 +58,32 @@
         .role-title { font-weight: 600; color: var(--moose-green); display: block; margin-top: 5px; }
 
         .color-palette { display: flex; gap: 12px; margin: 10px 0; }
-        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+        .swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         
-        .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 4000; background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 4000; background: var(--moose-green); color: var(--gold); border: 1px solid var(--gold); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
 
+        /* Responsive Fix for small screens */
         @media (max-width: 350px) {
             .unit span { font-size: 0.9rem; }
+            .unit label { font-size: 0.4rem; }
             .cursive { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop aria-hidden="true">
+    <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="welcomeOverlay" role="dialog" aria-labelledby="welcomeTitle">
+    <div id="welcomeOverlay">
         <p style="letter-spacing: 5px; font-size: 0.8rem;">THE WEDDING OF</p>
-        <p id="welcomeTitle" class="cursive" style="font-size: 4rem;">El Vincent & Irine</p>
+        <p class="cursive" style="font-size: 4rem;">El Vincent & Irine</p>
         <p style="font-family: 'Cinzel'; font-size: 1.2rem; margin-top: 20px;">03 . 07 . 2026</p>
-        <button class="btn" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="enterSite()" aria-label="Open wedding invitation">Open Invitation</button>
+        <button class="btn" style="width: auto; padding: 15px 40px; margin-top: 30px;" onclick="enterSite()">Open Invitation</button>
     </div>
 
-    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn" aria-label="Toggle background music">🔇</button>
+    <button class="music-toggle" onclick="toggleMusic()" id="musicBtn">🔇</button>
 
     <div class="site-frame"></div>
 
@@ -106,12 +100,12 @@
 
         <div class="photo-frame">
             <div class="slider">
-                <div class="mySlides" style="display:block;"><img src="wed1.png" alt="Vincent and Irine Portrait" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
-                <div class="mySlides"><img src="wed2.png" alt="El Vincent and Irine Smiling" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
+                <div class="mySlides" style="display:block;"><img src="wed1.png" alt="Couple Photo 1" onerror="this.src='https://via.placeholder.com/400x500?text=Irine+%26+Vincent'"></div>
+                <div class="mySlides"><img src="wed2.png" alt="Couple Photo 2" onerror="this.src='https://via.placeholder.com/400x500?text=The+Wedding'"></div>
             </div>
         </div>
 
-        <div class="timer" aria-label="Countdown to wedding day">
+        <div class="timer">
             <div class="unit"><span id="days">00</span><label>Days</label></div>
             <div class="unit"><span id="hours">00</span><label>Hrs</label></div>
             <div class="unit"><span id="mins">00</span><label>Mins</label></div>
@@ -123,8 +117,8 @@
         <div class="rsvp-box">
             <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
             <p id="limitMsg" style="font-size: 0.7rem; color: #888; margin-bottom: 10px;">Max 3 responses per device</p>
-            <input type="text" id="guestName" placeholder="Your Full Name" aria-label="Your Full Name">
-            <select id="isAttending" aria-label="Attending Status">
+            <input type="text" id="guestName" placeholder="Your Full Name">
+            <select id="isAttending">
                 <option value="Yes">Yes, I'm attending</option>
                 <option value="No">No, I can't make it</option>
             </select>
@@ -132,54 +126,92 @@
                 <span id="btnText">SUBMIT RSVP</span>
                 <div class="loader" id="loader"></div>
             </button>
-            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--text-main); font-size:0.7rem; text-decoration:underline; font-family:'Montserrat';">Who's attending?</button>
+            <button class="btn" onclick="openModal('guestModal')" style="background:none; border:none; color:var(--moose-green); font-size:0.7rem; text-decoration:underline; font-family:'Montserrat';">Who's attending?</button>
         </div>
     </div>
 
-    <div id="detailsModal" class="modal" role="dialog" aria-modal="true">
+    <div id="detailsModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('detailsModal')" aria-label="Close modal">&times;</span>
-            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Details</h2>
+            <span class="close" onclick="closeModal('detailsModal')">&times;</span>
+            <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Entourage</h2>
             
             <div class="detail-row">
                 <div class="section-header">Venues</div>
-                <span class="role-title">Ceremony & Reception</span>
-                Sto. Thomas de Villanueva Parish, Pardo, Cebu City
-                <a href="https://maps.app.goo.gl/YyU9WjS7Xp7XyS8M8" target="_blank" style="text-decoration:none;">
-                    <button class="btn map-btn" aria-label="Open location in Google Maps">📍 View Location on Map</button>
-                </a>
+                <span class="role-title">Ceremony</span>
+                Sto. Thomas de Villanueva Parish, Pardo, Cebu City @ 1:30 PM
+                <span class="role-title">Reception</span>
+                Sto. Thomas de Villanueva Parish Function Hall
             </div>
 
             <div class="detail-row">
                 <div class="section-header">Dress Code: Moose Green</div>
                 Semi-Formal Earth Tones
                 <div class="color-palette">
-                    <div class="swatch" style="background-color: #1a2e1a;" title="Moose Green"></div>
-                    <div class="swatch" style="background-color: #4a5d4a;" title="Sage"></div>
-                    <div class="swatch" style="background-color: #c5a028;" title="Gold"></div>
-                    <div class="swatch" style="background-color: #fdfaf5;" title="Cream"></div>
+                    <div class="swatch" style="background-color: #2e3b2e;"></div>
+                    <div class="swatch" style="background-color: #4a5d4a;"></div>
+                    <div class="swatch" style="background-color: #8c9c8c;"></div>
+                    <div class="swatch" style="background-color: #d4af37;"></div>
                 </div>
             </div>
 
             <div class="detail-row">
-                <div class="section-header">Entourage</div>
-                <span class="role-title">Parents of the Bride</span> Alejandro Briones & Raquel Abarcas
-                <span class="role-title">Parents of the Groom</span> Didong Enopia & Elizabeth Verano 
-                <span class="role-title">Best Man & Maid of Honor</span> Noel Estomago & Lovely Aras
+                <div class="section-header">Parents</div>
+                <span class="role-title">Of the Bride</span>
+                Alejandro Briones & Raquel Abarcas
+                <span class="role-title">Of the Groom</span>
+                Didong Enopia & Elizabeth Estomago Verano 
             </div>
-            <p style="font-size: 0.7rem; text-align: center; color: #888;">Tap anywhere outside to close</p>
+
+            <div class="detail-row">
+                <div class="section-header">Honor Graduates</div>
+                <span class="role-title">Best Man</span> Noel Estomago
+                <span class="role-title">Maid of Honor</span> Lovely Aras
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Groomsmen & Bridesmaids</div>
+                <span class="role-title">Groomsmen</span>
+                Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
+                <span class="role-title">Bridesmaids</span>
+                Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Bearers & Flower Girls</div>
+                <span class="role-title">Ring Bearer</span> John Benedict Abarcas
+                <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
+                <span class="role-title">Coin Bearer</span> Leonardo Paez
+                <span class="role-title">Flower Girls</span>
+                Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Major Sponsors</div>
+                <span class="role-title">Principal Sponsors</span>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+                <span class="role-title">Major Sponsors</span>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Estomago Verano 
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Secondary Sponsors</div>
+                <span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
+                <span class="role-title">Cord</span> Joselito Blanco & Sarah Sayon
+                <span class="role-title">Candle</span> Daryl Consuegra & Arbi Misal
+            </div>
         </div>
     </div>
 
-    <div id="guestModal" class="modal" role="dialog" aria-modal="true">
+    <div id="guestModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('guestModal')" aria-label="Close modal">&times;</span>
+            <span class="close" onclick="closeModal('guestModal')">&times;</span>
             <h2 style="font-family: 'Cinzel'; text-align: center;">Confirmed Guests</h2>
             <ul id="attendingList" style="list-style: none; padding: 0; font-size: 0.9rem;"></ul>
         </div>
     </div>
 
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
             authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
@@ -196,15 +228,28 @@
 
         function enterSite() {
             document.getElementById('welcomeOverlay').classList.add('fade-out');
-            music.play().then(() => { musicBtn.innerText = "🎵"; }).catch(e => { musicBtn.innerText = "🔇"; });
-            setTimeout(() => { document.getElementById('welcomeOverlay').style.display = 'none'; }, 1500);
+            music.play().then(() => {
+                musicBtn.innerText = "♪";
+            }).catch(e => {
+                console.log("Audio autoplay was blocked.");
+                musicBtn.innerText = "🔇";
+            });
+            setTimeout(() => {
+                document.getElementById('welcomeOverlay').style.display = 'none';
+            }, 1500);
         }
 
         function toggleMusic() {
-            if (music.paused) { music.play(); musicBtn.innerText = "🎵"; } 
-            else { music.pause(); musicBtn.innerText = "🔇"; }
+            if (music.paused) {
+                music.play();
+                musicBtn.innerText = "♪";
+            } else {
+                music.pause();
+                musicBtn.innerText = "🔇";
+            }
         }
 
+        // RSVP Submission
         document.getElementById('submitRsvp').onclick = async () => {
             const name = document.getElementById('guestName').value.trim();
             const status = document.getElementById('isAttending').value;
@@ -213,19 +258,31 @@
             const txt = document.getElementById('btnText');
 
             let rsvpCount = parseInt(localStorage.getItem('rsvp_count') || "0");
-            if (rsvpCount >= 3) return alert("Device limit reached.");
+            if (rsvpCount >= 3) return alert("Device limit reached (Max 3).");
+
             if(!name) return alert("Please enter your name");
             
-            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
+            btn.disabled = true; 
+            loader.style.display = "block"; 
+            txt.innerText = "SENDING...";
             
             try {
-                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                await db.collection("weddingGuests").add({ 
+                    name, 
+                    status, 
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                });
                 localStorage.setItem('rsvp_count', rsvpCount + 1);
                 alert("RSVP Successful!");
                 document.getElementById('guestName').value = "";
                 if (rsvpCount + 1 >= 3) btn.style.display = 'none';
-            } catch (e) { alert("Submission failed."); } 
-            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
+            } catch (e) { 
+                alert("Submission failed. Check your connection."); 
+            } finally { 
+                btn.disabled = false; 
+                loader.style.display = "none"; 
+                txt.innerText = "SUBMIT RSVP"; 
+            }
         };
 
         function openModal(id) { 
@@ -233,44 +290,54 @@
             if(id==='guestModal') loadGuests(); 
         }
 
-        function closeModal(id) { document.getElementById(id).style.display = "none"; }
-        
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') { event.target.style.display = "none"; }
+        function closeModal(id) { 
+            document.getElementById(id).style.display = "none"; 
         }
-
+        
         async function loadGuests() {
             const list = document.getElementById('attendingList');
-            list.innerHTML = "<li>Loading...</li>";
+            list.innerHTML = "<li style='text-align:center;'>Loading guest list...</li>";
             try {
-                const snap = await db.collection("weddingGuests").orderBy("timestamp", "desc").get();
+                const snap = await db.collection("weddingGuests")
+                                     .orderBy("timestamp", "desc")
+                                     .get();
+                
                 list.innerHTML = "";
+                let count = 0;
+                
                 snap.forEach(doc => { 
                     if(doc.data().status === "Yes") {
-                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">✨ ${doc.data().name}</li>`; 
+                        list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">🌿 ${doc.data().name}</li>`; 
+                        count++;
                     }
                 });
-            } catch (e) { list.innerHTML = "<li>Error loading list.</li>"; }
+
+                if (count === 0) {
+                    list.innerHTML = "<li style='text-align:center; color:#888;'>No confirmed guests yet.</li>";
+                }
+            } catch (e) {
+                list.innerHTML = "<li style='text-align:center; color:red;'>Could not load list.</li>";
+            }
         }
 
+        // Improved Image Slider
         let sIdx = 0;
-        const slides = document.querySelectorAll(".mySlides");
         function play() {
-            if(slides.length > 0) {
-                slides.forEach(x => x.style.display = "none");
-                slides[sIdx].style.display = "block";
-                sIdx = (sIdx + 1) % slides.length; 
+            const s = document.querySelectorAll(".mySlides");
+            if(s.length > 0) {
+                s.forEach(x => x.style.display = "none");
+                s[sIdx].style.display = "block";
+                sIdx = (sIdx + 1) % s.length; 
             }
             setTimeout(play, 3500);
         }
         play();
 
+        // Countdown Timer
         const weddingDate = new Date("March 7, 2026 13:30:00").getTime();
         setInterval(() => {
-            const now = new Date().getTime();
-            const diff = weddingDate - now;
-            if (diff < 0) { document.querySelector(".timer").innerHTML = "HAPPY WEDDING DAY!"; return; }
+            const diff = weddingDate - new Date().getTime();
+            if (diff < 0) return;
             document.getElementById("days").innerText = Math.floor(diff / 86400000).toString().padStart(2, '0');
             document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
             document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
