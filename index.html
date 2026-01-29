@@ -37,7 +37,7 @@
         }
         #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Transparent Site Frame */
+        /* Transparent Site Frame 
         .site-frame { 
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
             border: 12px solid transparent; 
@@ -45,7 +45,20 @@
             outline-offset: -10px; 
             pointer-events: none; 
             z-index: 2000; 
-        }
+        }*/
+
+        /* Update this section in your code */
+.site-frame { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    border: none; /* Changed from 12px solid */
+    outline: none; /* Changed from 2px solid var(--gold) */
+    pointer-events: none; 
+    z-index: 2000; 
+}
         
         .container { 
             max-width: 500px; 
