@@ -37,7 +37,7 @@
         }
         #welcomeOverlay.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Modified Frame: Removed the solid cream border to show bg.jpg */
+        /* Transparent Site Frame */
         .site-frame { 
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
             border: 12px solid transparent; 
@@ -52,11 +52,11 @@
             width: 85%; 
             padding: 60px 20px; 
             text-align: center; 
-            /* REMOVED white background, added transparent glass effect */
-            background-color: rgba(255, 255, 255, 0.1); 
+            /* Glass effect to show bg.jpg */
+            background-color: rgba(253, 250, 245, 0.15); 
             margin: 40px 0;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 15px;
             position: relative;
             z-index: 10;
@@ -67,7 +67,6 @@
         
         .main-info { font-size: 0.9rem; letter-spacing: 1px; margin: 15px 0; line-height: 1.6; font-weight: 500; }
         
-        /* Modified Photo Frame to be transparent */
         .photo-frame { 
             background: rgba(255, 255, 255, 0.2); 
             padding: 10px; 
@@ -92,7 +91,6 @@
         .loader { display: none; width: 18px; height: 18px; border: 2px solid var(--gold); border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; position: absolute; right: 15px; top: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Modified RSVP Box to be transparent */
         .rsvp-box { 
             background: rgba(255, 255, 255, 0.15); 
             padding: 25px; 
@@ -106,7 +104,7 @@
             padding: 12px; 
             margin: 8px 0; 
             border: 1px solid rgba(255,255,255,0.3); 
-            background: rgba(255, 255, 255, 0.8); /* Inputs stay slightly white for typing visibility */
+            background: rgba(255, 255, 255, 0.85);
             font-family: 'Montserrat'; 
             box-sizing: border-box; 
         }
@@ -177,7 +175,7 @@
         
         <div class="rsvp-box">
             <h3 style="font-family: 'Cinzel'; font-size: 0.9rem; margin: 0 0 10px 0;">RSVP Station</h3>
-            <p id="limitMsg" style="font-size: 0.7rem; color: #eee; margin-bottom: 10px;">Max 3 responses per device</p>
+            <p id="limitMsg" style="font-size: 0.7rem; color: #555; margin-bottom: 10px;">Max 3 responses per device</p>
             <input type="text" id="guestName" placeholder="Your Full Name">
             <select id="isAttending">
                 <option value="Yes">Yes, I'm attending</option>
@@ -195,6 +193,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('detailsModal')">&times;</span>
             <h2 style="font-family: 'Cinzel'; text-align: center; color: var(--moose-green); margin-bottom: 20px;">Wedding Entourage</h2>
+            
             <div class="detail-row">
                 <div class="section-header">Venues</div>
                 <span class="role-title">Ceremony</span>
@@ -202,6 +201,7 @@
                 <span class="role-title">Reception</span>
                 Sto. Thomas de Villanueva Parish Function Hall
             </div>
+
             <div class="detail-row">
                 <div class="section-header">Dress Code: Moose Green</div>
                 Semi-Formal Earth Tones
@@ -212,21 +212,41 @@
                     <div class="swatch" style="background-color: #d4af37;"></div>
                 </div>
             </div>
+
             <div class="detail-row">
                 <div class="section-header">Parents</div>
                 <span class="role-title">Of the Bride</span> Alejandro Briones & Raquel Abarcas
-                <span class="role-title">Of the Groom</span> Didong Enopia & Elizabeth Estomago Verano 
+                <span class="role-title">Of the Groom</span> Didong Enopia & Elizabeth Estomago Verano
             </div>
+
             <div class="detail-row">
                 <div class="section-header">Honor Graduates</div>
                 <span class="role-title">Best Man</span> Noel Estomago
                 <span class="role-title">Maid of Honor</span> Lovely Aras
             </div>
+
             <div class="detail-row">
                 <div class="section-header">Groomsmen & Bridesmaids</div>
                 <span class="role-title">Groomsmen</span> Melquesedick Sayon, Ed Jacaban, Armando Nical, Sherwin Nical
                 <span class="role-title">Bridesmaids</span> Aireen Ebrado, Kimberly Rodriguez, Dorienar Hilaga, Dhana Cabillo
             </div>
+
+            <div class="detail-row">
+                <div class="section-header">Bearers & Flower Girls</div>
+                <span class="role-title">Ring Bearer</span> John Benedict Abarcas
+                <span class="role-title">Bible Bearer</span> Daniel Matthew Abellana
+                <span class="role-title">Coin Bearer</span> Leonardo Paez
+                <span class="role-title">Flower Girls</span> Mary Isabelle Abarcas, Win Julea Estomago, Lilian Estomago
+            </div>
+
+            <div class="detail-row">
+                <div class="section-header">Major Sponsors</div>
+                <span class="role-title">Principal Sponsors</span>
+                Ariel Jacalan, Ma. Theresa Rabuyo, Dhen Freed Aras, Corazon Laluna, Jennifer Abarcas, Josefina Concial
+                <span class="role-title">Major Sponsors</span>
+                Rebecca Tubilla, Rose Estomago Enopia, Nerissa Laluna, Dhen Freed Aras, Elizabeth Estomago Verano
+            </div>
+
             <div class="detail-row">
                 <div class="section-header">Secondary Sponsors</div>
                 <span class="role-title">Veil</span> Gleen Paez & Flordeliza Bacalso
@@ -245,7 +265,6 @@
     </div>
 
     <script>
-        // Firebase and logic remain unchanged
         const firebaseConfig = {
             apiKey: "AIzaSyA8WIXfj00AxSkecGqrWpk61pIQrgSmmEo",
             authDomain: "react-time-tracker-cdbd2.firebaseapp.com",
@@ -262,24 +281,13 @@
 
         function enterSite() {
             document.getElementById('welcomeOverlay').classList.add('fade-out');
-            music.play().then(() => {
-                musicBtn.innerText = "🎵";
-            }).catch(e => {
-                musicBtn.innerText = "🔇";
-            });
-            setTimeout(() => {
-                document.getElementById('welcomeOverlay').style.display = 'none';
-            }, 1500);
+            music.play().then(() => { musicBtn.innerText = "🎵"; }).catch(e => { musicBtn.innerText = "🔇"; });
+            setTimeout(() => { document.getElementById('welcomeOverlay').style.display = 'none'; }, 1500);
         }
 
         function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                musicBtn.innerText = "🎵";
-            } else {
-                music.pause();
-                musicBtn.innerText = "🔇";
-            }
+            if (music.paused) { music.play(); musicBtn.innerText = "🎵"; } 
+            else { music.pause(); musicBtn.innerText = "🔇"; }
         }
 
         document.getElementById('submitRsvp').onclick = async () => {
@@ -290,30 +298,18 @@
             const txt = document.getElementById('btnText');
 
             let rsvpCount = parseInt(localStorage.getItem('rsvp_count') || "0");
-            if (rsvpCount >= 3) return alert("Device limit reached (Max 3).");
+            if (rsvpCount >= 3) return alert("Device limit reached.");
             if(!name) return alert("Please enter your name");
             
-            btn.disabled = true; 
-            loader.style.display = "block"; 
-            txt.innerText = "SENDING...";
-            
+            btn.disabled = true; loader.style.display = "block"; txt.innerText = "SENDING...";
             try {
-                await db.collection("weddingGuests").add({ 
-                    name, 
-                    status, 
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                });
+                await db.collection("weddingGuests").add({ name, status, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
                 localStorage.setItem('rsvp_count', rsvpCount + 1);
                 alert("RSVP Successful!");
                 document.getElementById('guestName').value = "";
                 if (rsvpCount + 1 >= 3) btn.style.display = 'none';
-            } catch (e) { 
-                alert("Submission failed."); 
-            } finally { 
-                btn.disabled = false; 
-                loader.style.display = "none"; 
-                txt.innerText = "SUBMIT RSVP"; 
-            }
+            } catch (e) { alert("Submission failed."); } 
+            finally { btn.disabled = false; loader.style.display = "none"; txt.innerText = "SUBMIT RSVP"; }
         };
 
         function openModal(id) { 
@@ -321,9 +317,7 @@
             if(id==='guestModal') loadGuests(); 
         }
 
-        function closeModal(id) { 
-            document.getElementById(id).style.display = "none"; 
-        }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
         
         async function loadGuests() {
             const list = document.getElementById('attendingList');
@@ -336,9 +330,7 @@
                         list.innerHTML += `<li style="border-bottom: 1px solid #eee; padding: 10px 0;">✨ ${doc.data().name}</li>`; 
                     }
                 });
-            } catch (e) {
-                list.innerHTML = "<li>Error loading list.</li>";
-            }
+            } catch (e) { list.innerHTML = "<li>Error loading list.</li>"; }
         }
 
         let sIdx = 0;
